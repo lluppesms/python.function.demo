@@ -1,0 +1,10 @@
+# DO NOT include azure-functions-worker in this file
+# The Python Worker is managed by Azure Functions platform
+# Manually managing azure-functions-worker may cause unexpected issues
+
+# Exception while executing function: Functions.OCRImageTrigger Result: Failure
+# Exception: ModuleNotFoundError: No module named 'azure.cognitiveservices'. Please check the requirements.txt file for the missing module. For more info, please refer the troubleshooting 
+
+azure-functions
+azure-cognitiveservices-vision-computervision
+msrest
