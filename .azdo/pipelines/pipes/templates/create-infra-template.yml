@@ -97,7 +97,7 @@ jobs:
       azureSubscription: $(subscriptionName)
       scriptType: bash
       scriptLocation: inlineScript
-      inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Application=$(appName) Environment=$(environmentNameUpper)
+      inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
 
   - task: AzureResourceManagerTemplateDeployment@3
     displayName: 'Publish Bicep Resources'

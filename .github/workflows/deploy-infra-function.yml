@@ -55,7 +55,7 @@ jobs:
 # ------------------------------------------------------------------------------------------------------------------------
   infra-qa:
     name: Create QA Infra
-    needs: deploy-dev
+    needs: build-app
     uses: ./.github/workflows/template-create-infra.yml
     secrets: inherit
     with:
