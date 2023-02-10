@@ -32,12 +32,17 @@ jobs:
 
   steps:
   - bash: |
+      orgNameLower=$(echo "$(orgName)" | tr '[:upper:]' '[:lower:]')
+      echo "orgName=$(orgName)"
+      echo "orgNameLower=$orgNameLower"
+      echo "##vso[task.setvariable variable=orgNameLower]$orgNameLower"
+
       appNameLower=$(echo "$(appName)" | tr '[:upper:]' '[:lower:]')
       echo "appName=$(appName)"
       echo "appNameLower=$appNameLower"
       echo "##vso[task.setvariable variable=appNameLower]$appNameLower"
 
-      resourceGroupName=$(echo "rg-$(appName)-$(environmentNameLower)" | tr '[:upper:]' '[:lower:]')
+      resourceGroupName=$(echo "rg-$(orgNameLower)-$(appNameLower)-$(environmentNameLower)" | tr '[:upper:]' '[:lower:]')
       echo "resourceGroupName=$resourceGroupName"
       echo "##vso[task.setvariable variable=resourceGroupName]$resourceGroupName"
       
@@ -57,6 +62,8 @@ jobs:
       echo "environmentNameUpper=$(environmentNameUpper)"
       echo "environmentNameLower=$(environmentNameLower)"
       echo "location=$(location)"
+      echo "orgName=$(orgName)"
+      echo "orgNameLower=$(orgNameLower)"
       echo "appName=$(appName)"
       echo "appNameLower=$(appNameLower)"
       echo "storageSku=$(storageSku)"
@@ -71,9 +78,9 @@ jobs:
       echo "templateFile=$(templateFile)"
       echo "compiledJsonFile=$(compiledJsonFile)"
       echo "Resource Group Command:"
-      echo "  az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Application=$(appName) Environment=$(environmentNameUpper)"
+      echo "  az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)"
       echo "Bicep Deploy Sample Command:"
-      echo "  az deployment group create -n main-deploy-$(runDateTimeZ) --resource-group $(resourceGroupName) --template-file 'main.bicep' --parameters environmentCode $(environmentNameLower) location $(location) appName $(appName) storageSku $(storageSku) functionName $(functionName) functionAppSku $(functionAppSku) functionAppSkuFamily $(functionAppSkuFamily) functionAppSkuTier $(functionAppSkuTier) keyVaultOwnerUserId $(keyVaultOwnerUserId) keyVaultOwnerUserId2 $(keyVaultOwnerUserId2) runDateTime $(runDateTime)"
+      echo "  az deployment group create -n main-deploy-$(runDateTimeZ) --resource-group $(resourceGroupName) --template-file 'main.bicep' --parameters environmentCode $(environmentNameLower) location $(location) orgName $(orgName) appName $(appName) storageSku $(storageSku) functionName $(functionName) functionAppSku $(functionAppSku) functionAppSkuFamily $(functionAppSkuFamily) functionAppSkuTier $(functionAppSkuTier) keyVaultOwnerUserId $(keyVaultOwnerUserId) runDateTime $(runDateTime)"
     displayName: 'Display Variables'
     continueOnError: true
 
@@ -97,6 +104,7 @@ jobs:
     inputs:
       csmFile: $(templateFile)
       overrideParameters: >
+        -orgName $(orgName)
         -appName $(appName)
         -environmentCode $(environmentNameLower)
         -keyVaultOwnerUserId $(keyVaultOwnerUserId)

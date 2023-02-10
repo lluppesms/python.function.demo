@@ -4,12 +4,11 @@
 // To deploy this Bicep manually:
 // 	 az login
 //   az account set --subscription <subscriptionId>
-//   Test azd deploy:
-//     az deployment group create -n main-deploy-20221115T150000Z --resource-group rg_pythondemo_azd  --template-file 'main.bicep' --parameters appName=lll-dur-azd environmentCode=azd keyVaultOwnerUserId=xxxxxxxx-xxxx-xxxx
-//   Test AzDO Pipeline deploy:
-//     az deployment group create -n main-deploy-20221115T150000Z --resource-group rg_pythondemo_azdo --template-file 'main.bicep' --parameters appName=lll-dur-dev environmentCode=dev keyVaultOwnerUserId=xxxxxxxx-xxxx-xxxx
+//   Test Pipeline deploy:
+//     az deployment group create -n main-deploy-20230210T130100Z --resource-group rg-xxx-pyocr-demo --template-file 'main.bicep' --parameters orgName=xxx appName=pyocr environmentCode=demo keyVaultOwnerUserId=xxxxxxxx-xxxx-xxxx
 // --------------------------------------------------------------------------------
-param appName string = ''
+param orgName string = ''
+param appName string = 'pyocr'
 @allowed(['azd','gha','azdo','dev','demo','qa','stg','ct','prod'])
 param environmentCode string = 'dev'
 param location string = resourceGroup().location
@@ -37,6 +36,7 @@ var commonTags = {
 module resourceNames 'resourcenames.bicep' = {
   name: 'resourcenames${deploymentSuffix}'
   params: {
+    orgName: orgName
     appName: appName
     environment: environmentCode
     functionName: functionName

@@ -70,7 +70,8 @@ resource blobServiceResource 'Microsoft.Storage/storageAccounts/blobServices@201
 }
 
 resource containers 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for containerName in containerNames: {
-    name: '${storageAccountResource.name}/default/${containerName}'
+    name: '${containerName}'
+    parent: blobServiceResource
     properties: {
       publicAccess: 'None'
       metadata: {}
