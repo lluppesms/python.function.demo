@@ -42,33 +42,32 @@ jobs:
       functionAppSkuFamily: 'Y'
       functionAppSkuTier: 'Dynamic'
 
-  # infra-qa:
-  #   name: Create QA Infra
-  #   needs: infra-demo
-  #   uses: ./.github/workflows/template-create-infra.yml
-  #   secrets: inherit
-  #   with:
-  #     envCode: 'qa'
-  #     location: 'eastus'
-  #     storageSku: 'Standard_LRS'
-  #     functionAppSku: 'Y1'
-  #     functionAppSkuFamily: 'Y'
-  #     functionAppSkuTier: 'Dynamic'
+  infra-qa:
+    name: Create QA Infra
+    needs: infra-demo
+    uses: ./.github/workflows/template-create-infra.yml
+    secrets: inherit
+    with:
+      envCode: 'qa'
+      location: 'eastus'
+      storageSku: 'Standard_LRS'
+      functionAppSku: 'Y1'
+      functionAppSkuFamily: 'Y'
+      functionAppSkuTier: 'Dynamic'
 
 # ------------------------------------------------------------------------------------------------------------------------
-  deploy-app:
+  deploy-app-dev:
     name: Deploy App
     needs: infra-demo
     uses: ./.github/workflows/template-function-app-deploy.yml
     secrets: inherit
     with:
-      envCode: 'demo'
+      envCode: 'dev'
 
-  # deploy-app-qa:
-  #   name: Deploy QA App
-  #   needs: deploy-app
-  #   uses: ./.github/workflows/template-function-app-deploy.yml
-  #   secrets: inherit
-  #   with:
-  #     envCode: 'qa'
-
+  deploy-app-qa:
+    name: Deploy QA App
+    needs: deploy-app-dev
+    uses: ./.github/workflows/template-function-app-deploy.yml
+    secrets: inherit
+    with:
+      envCode: 'qa'

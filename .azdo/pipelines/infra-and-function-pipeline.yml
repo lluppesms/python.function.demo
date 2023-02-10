@@ -27,4 +27,4 @@ stages:
 - template: pipes/infra-and-function-pipe.yml
   parameters:
     variableGroupName: 'PythonDemo'
-    environments: ['DEMO']  # ['DEV','PROD'] ['DEV','QA'] or ['DEV','QA','PROD']
+    environments: ['DEV','QA']  # ['DEV','PROD'] ['DEV','QA'] or ['DEV','QA','PROD']

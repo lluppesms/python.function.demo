@@ -29,18 +29,18 @@ jobs:
     secrets: inherit
 
 # ------------------------------------------------------------------------------------------------------------------------
-  deploy-app:
-    name: Deploy App
+  deploy-app-dev:
+    name: Deploy Dev App
     needs: build-app
     uses: ./.github/workflows/template-function-app-deploy.yml
     secrets: inherit
     with:
-      envCode: 'demo'
+      envCode: 'dev'
 
-  # deploy-app-qa:
-  #   name: Deploy QA App
-  #   needs: deploy-app
-  #   uses: ./.github/workflows/template-function-app-deploy.yml
-  #   secrets: inherit
-  #   with:
-  #     envCode: 'qa'
+  deploy-app-qa:
+    name: Deploy QA App
+    needs: deploy-app
+    uses: ./.github/workflows/template-function-app-deploy.yml
+    secrets: inherit
+    with:
+      envCode: 'qa'

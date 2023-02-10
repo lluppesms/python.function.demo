@@ -20,27 +20,27 @@ on:
 
 # ------------------------------------------------------------------------------------------------------------------------
 jobs:
-  infra-demo:
-    name: Create Infra
+  infra-dev:
+    name: Create Dev Infra
     uses: ./.github/workflows/template-create-infra.yml
     secrets: inherit
     with:
-      envCode: 'demo'
+      envCode: 'dev'
       location: 'eastus'
       storageSku: 'Standard_LRS'
       functionAppSku: 'Y1'
       functionAppSkuFamily: 'Y'
       functionAppSkuTier: 'Dynamic'
 
-  # infra-qa:
-  #   name: Create QA Infra
-  #   needs: infra-demo
-  #   uses: ./.github/workflows/template-create-infra.yml
-  #   secrets: inherit
-  #   with:
-  #     envCode: 'qa'
-  #     location: 'eastus'
-  #     storageSku: 'Standard_LRS'
-  #     functionAppSku: 'Y1'
-  #     functionAppSkuFamily: 'Y'
-  #     functionAppSkuTier: 'Dynamic'
+  infra-qa:
+    name: Create QA Infra
+    needs: infra-dev
+    uses: ./.github/workflows/template-create-infra.yml
+    secrets: inherit
+    with:
+      envCode: 'qa'
+      location: 'eastus'
+      storageSku: 'Standard_LRS'
+      functionAppSku: 'Y1'
+      functionAppSkuFamily: 'Y'
+      functionAppSkuTier: 'Dynamic'
