@@ -1,5 +1,7 @@
 // ----------------------------------------------------------------------------------------------------
 // This BICEP file will create a Computer Vision Resource
+// FYI: To purge a Computer Vision resource with soft delete enabled:
+//   az resource delete --ids /subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/locations/{location}/resourceGroups/{resourceGroup}/deletedAccounts/{resourceName}
 // ----------------------------------------------------------------------------------------------------
 param computerVisionName string = 'xxx-computer-vision-${uniqueString(resourceGroup().id)}'
 param location string = resourceGroup().location

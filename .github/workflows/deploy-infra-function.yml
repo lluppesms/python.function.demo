@@ -29,8 +29,8 @@ jobs:
     secrets: inherit
 
 # ------------------------------------------------------------------------------------------------------------------------
-  infra-demo:
-    name: Create Infra
+  infra-dev:
+    name: Create Dev Infra
     needs: build-app
     uses: ./.github/workflows/template-create-infra.yml
     secrets: inherit
@@ -42,9 +42,18 @@ jobs:
       functionAppSkuFamily: 'Y'
       functionAppSkuTier: 'Dynamic'
 
+  deploy-dev:
+    name: Deploy Dev App
+    needs: infra-dev
+    uses: ./.github/workflows/template-function-app-deploy.yml
+    secrets: inherit
+    with:
+      envCode: 'dev'
+
+# ------------------------------------------------------------------------------------------------------------------------
   infra-qa:
     name: Create QA Infra
-    needs: infra-demo
+    needs: deploy-dev
     uses: ./.github/workflows/template-create-infra.yml
     secrets: inherit
     with:
@@ -55,18 +64,9 @@ jobs:
       functionAppSkuFamily: 'Y'
       functionAppSkuTier: 'Dynamic'
 
-# ------------------------------------------------------------------------------------------------------------------------
-  deploy-app-dev:
-    name: Deploy App
-    needs: infra-demo
-    uses: ./.github/workflows/template-function-app-deploy.yml
-    secrets: inherit
-    with:
-      envCode: 'dev'
-
-  deploy-app-qa:
+  deploy-qa:
     name: Deploy QA App
-    needs: deploy-app-dev
+    needs: infra-qa
     uses: ./.github/workflows/template-function-app-deploy.yml
     secrets: inherit
     with:
