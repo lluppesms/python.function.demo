@@ -17,7 +17,7 @@ param keyVaultOwnerUserId string = ''
 // optional parameters
 @allowed(['Standard_LRS','Standard_GRS','Standard_RAGRS'])
 param storageSku string = 'Standard_LRS'
-param functionName string = 'function'
+param functionName string = 'process'
 param functionAppSku string = 'Y1'
 param functionAppSkuFamily string = 'Y'
 param functionAppSkuTier string = 'Dynamic'
@@ -40,7 +40,7 @@ module resourceNames 'resourcenames.bicep' = {
     appName: appName
     environment: environmentCode
     functionName: functionName
-    functionStorageNameSuffix: 'store'
+    functionStorageNameSuffix: 'func'
     dataStorageNameSuffix: 'data'
   }
 }

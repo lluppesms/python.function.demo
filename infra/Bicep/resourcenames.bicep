@@ -18,9 +18,9 @@ var sanitizedAppName                     = replace(replace(lowerAppName, '-', ''
 var sanitizedEnvironment                 = toLower(environment)
 
 // --------------------------------------------------------------------------------
-var functionAppName                      = toLower('${lowerOrgName}-${lowerAppName}-${functionName}-${sanitizedEnvironment}')
-var computerVisionName                   = toLower('${lowerOrgName}-${lowerAppName}-computer-vision-${sanitizedEnvironment}')
-var computerVisionNetworkName            = toLower('${lowerOrgName}-${lowerAppName}-cv-vnet-${sanitizedEnvironment}')
+var functionAppName                      = toLower('${sanitizedOrgName}-${sanitizedAppName}-${functionName}-${sanitizedEnvironment}')
+var computerVisionName                   = toLower('${sanitizedOrgName}-${sanitizedAppName}-computer-vision-${sanitizedEnvironment}')
+var computerVisionNetworkName            = toLower('${sanitizedOrgName}-${sanitizedAppName}-cv-vnet-${sanitizedEnvironment}')
 var baseStorageName                      = toLower('${sanitizedOrgName}${sanitizedAppName}${sanitizedEnvironment}str')
 
 // --------------------------------------------------------------------------------
@@ -32,6 +32,6 @@ output computerVisionNetworkName string  = computerVisionNetworkName
 output computerVisionName string         = computerVisionName
 
 // Key Vaults and Storage Accounts can only be 24 characters long
-output keyVaultName string               = take(toLower('${lowerOrgName}${lowerAppName}vault${sanitizedEnvironment}'), 24)
-output functionStorageName string        = take(toLower('${baseStorageName}${functionStorageNameSuffix}${uniqueString(resourceGroup().id)}'), 24)
-output dataStorageName string            = take(toLower('${baseStorageName}${dataStorageNameSuffix}${uniqueString(resourceGroup().id)}'), 24)
+output keyVaultName string               = take(toLower('${sanitizedOrgName}${sanitizedAppName}${sanitizedEnvironment}vault'), 24)
+output functionStorageName string        = take(toLower('${baseStorageName}${functionStorageNameSuffix}'), 24)
+output dataStorageName string            = take(toLower('${baseStorageName}${dataStorageNameSuffix}'), 24)
