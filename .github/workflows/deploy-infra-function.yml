@@ -35,7 +35,7 @@ jobs:
     uses: ./.github/workflows/template-create-infra.yml
     secrets: inherit
     with:
-      envCode: 'demo'
+      envCode: 'dev'
       location: 'eastus'
       storageSku: 'Standard_LRS'
       functionName: 'process'
