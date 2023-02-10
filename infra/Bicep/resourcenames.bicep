@@ -6,7 +6,8 @@ param appName string = ''
 @allowed(['azd','gha','azdo','dev','demo','qa','stg','ct','prod'])
 param environment string = 'azd'
 param functionName string = 'processor'
-param functionStorageNameSuffix string = 'store'
+
+param functionStorageNameSuffix string = 'func'
 param dataStorageNameSuffix string = 'data'
 
 // --------------------------------------------------------------------------------
@@ -20,7 +21,7 @@ var sanitizedEnvironment                 = toLower(environment)
 var functionAppName                      = toLower('${lowerOrgName}-${lowerAppName}-${functionName}-${sanitizedEnvironment}')
 var computerVisionName                   = toLower('${lowerOrgName}-${lowerAppName}-computer-vision-${sanitizedEnvironment}')
 var computerVisionNetworkName            = toLower('${lowerOrgName}-${lowerAppName}-cv-vnet-${sanitizedEnvironment}')
-var baseStorageName                      = toLower('${sanitizedOrgName}-${sanitizedAppName}${sanitizedEnvironment}str')
+var baseStorageName                      = toLower('${sanitizedOrgName}-${sanitizedAppName}${sanitizedEnvironment}store')
 
 // --------------------------------------------------------------------------------
 output functionAppName string            = functionAppName
@@ -32,5 +33,5 @@ output computerVisionName string         = computerVisionName
 
 // Key Vaults and Storage Accounts can only be 24 characters long
 output keyVaultName string               = take(toLower('${lowerOrgName}${lowerAppName}vault${sanitizedEnvironment}'), 24)
-output functionStorageName string        = take(toLower('${baseStorageName}${functionStorageNameSuffix}${uniqueString(resourceGroup().id)}'), 24)
-output dataStorageName string            = take(toLower('${baseStorageName}${dataStorageNameSuffix}${uniqueString(resourceGroup().id)}'), 24)
+output functionStorageName string        = take(toLower('${baseStorageName}${functionStorageNameSuffix}'), 24)
+output dataStorageName string            = take(toLower('${baseStorageName}${dataStorageNameSuffix}'), 24)
