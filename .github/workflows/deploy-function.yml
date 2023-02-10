@@ -36,6 +36,7 @@ jobs:
     secrets: inherit
     with:
       envCode: 'dev'
+      functionName: 'process'
 
   deploy-qa:
     name: Deploy QA App
@@ -44,3 +45,4 @@ jobs:
     secrets: inherit
     with:
       envCode: 'qa'
+      functionName: 'process'

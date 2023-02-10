@@ -18,6 +18,9 @@ on:
       storageSku:
         required: false
         type: string
+      functionName:
+        required: false
+        type: string
       functionAppSku:
         required: false
         type: string
@@ -47,13 +50,14 @@ jobs:
         echo "appName=${{ secrets.APP_NAME }}"
         echo "location=${{ inputs.location }}"
         echo "storageSku=${{ inputs.storageSku }}"
+        echo "functionName=${{ inputs.functionName }}"
         echo "functionAppSku=${{ inputs.functionAppSku }}"
         echo "functionAppSkuFamily=${{ inputs.functionAppSkuFamily }}"
         echo "functionAppSkuTier=${{ inputs.functionAppSkuTier }}"
         echo "Resource Group Command:"
         echo "  az group create --name ${{ env.resourceGroupName }} --location ${{ inputs.location }} --tags Organization=${{ secrets.ORG_NAME }}Application=${{ secrets.APP_NAME }} Environment=${{ inputs.envCode }}"
         echo "Bicep Deploy Sample Command:"
-        echo "  az deployment group create -n main-deploy-${{ env.runDateTimeZ }} --resource-group ${{ env.resourceGroupName }} --template-file 'main.bicep' --parameters environment=${{ inputs.envCode }} location=${{ inputs.location }} orgName=${{ secrets.ORG_NAME }} appName=${{ secrets.APP_NAME }} keyVaultOwnerUserId=${{ env.keyVaultOwnerUserId }}"
+        echo "  az deployment group create -n main-deploy-${{ env.runDateTimeZ }} --resource-group ${{ env.resourceGroupName }} --template-file 'main.bicep' --parameters environment=${{ inputs.envCode }} location=${{ inputs.location }} functionName=${{ inputs.functionName }} orgName=${{ secrets.ORG_NAME }} appName=${{ secrets.APP_NAME }} keyVaultOwnerUserId=${{ env.keyVaultOwnerUserId }}"
         echo "Pipeline Workspace Directory Contents:"
         tree ${{ env.GITHUB_ACTION_PATH }}
       continue-on-error: true
@@ -87,6 +91,7 @@ jobs:
           orgName=${{ secrets.ORG_NAME }} 
           appName=${{ secrets.APP_NAME }} 
           storageSku=${{ inputs.storageSku }} 
+          functionName=${{ inputs.functionName }} 
           functionAppSku=${{ inputs.functionAppSku }} 
           functionAppSkuFamily=${{ inputs.functionAppSkuFamily }}
           functionAppSkuTier=${{ inputs.functionAppSkuTier }} 

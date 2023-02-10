@@ -4,7 +4,7 @@
 # You need to set up secrets in the GitHub Secrets Repository before running these workflows.
 #   See Docs\CreateGitHubSecrets\.md for details
 # ------------------------------------------------------------------------------------------------------------------------
-name: template.pyfunctionapp.build
+name: template.build.pyfunction
 run-name: Build Python Function App
 on:
   workflow_call:

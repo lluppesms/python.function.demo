@@ -22,7 +22,7 @@ jobs:
 
   steps:
   - bash: |
-      functionAppName=$(echo "$(appName)-$(functionName)-$(environmentName)" | tr '[:upper:]' '[:lower:]')
+      functionAppName=$(echo "$(orgName)-$(appName)-$(functionName)-$(environmentName)" | tr '[:upper:]' '[:lower:]')
       echo "##vso[task.setvariable variable=functionAppName]$functionAppName"
     displayName: 'Create Variables'
 

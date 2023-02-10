@@ -38,6 +38,7 @@ jobs:
       envCode: 'demo'
       location: 'eastus'
       storageSku: 'Standard_LRS'
+      functionName: 'process'
       functionAppSku: 'Y1'
       functionAppSkuFamily: 'Y'
       functionAppSkuTier: 'Dynamic'
@@ -49,6 +50,7 @@ jobs:
     secrets: inherit
     with:
       envCode: 'dev'
+      functionName: 'process'
 
 # ------------------------------------------------------------------------------------------------------------------------
   infra-qa:
@@ -60,6 +62,7 @@ jobs:
       envCode: 'qa'
       location: 'eastus'
       storageSku: 'Standard_LRS'
+      functionName: 'process'
       functionAppSku: 'Y1'
       functionAppSkuFamily: 'Y'
       functionAppSkuTier: 'Dynamic'
@@ -71,3 +74,4 @@ jobs:
     secrets: inherit
     with:
       envCode: 'qa'
+      functionName: 'process'
