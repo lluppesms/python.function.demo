@@ -27,4 +27,5 @@ stages:
 - template: pipes/infra-and-function-pipe.yml
   parameters:
     variableGroupName: 'PythonDemo'
-    environments: ['DEV','QA']  # ['DEV','PROD'] ['DEV','QA'] or ['DEV','QA','PROD']
+    environments: ['DEV','PROD']
+    runCodeScan: true

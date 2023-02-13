@@ -7,17 +7,25 @@ parameters:
   default: ['DEV']
 - name: variableGroupName
   default: 'myVariableGroupName'
+- name: runCodeScan
+  type: boolean
+  default: false
 
 # ----------------------------------------------------------------------------------------------------
 stages:
+- ${{ if eq(variables['runCodeScan'], 'true') }} :
+  - stage: ScanApplication
+    displayName: Scan Application
+    jobs:
+    - template: templates/secure-devops-template.yml
+      parameters:
+        variableGroupName: ${{ parameters.variableGroupName }}
+        environmentName: 'DEV'
+
+# ----------------------------------------------------------------------------------------------------
 - stage: BuildApplication
   displayName: Build Application
   jobs:
-  - template: templates/secure-devops-template.yml
-    parameters:
-      variableGroupName: ${{ parameters.variableGroupName }}
-      environmentName: 'DEV'
-
   - template: templates/build-python-function-template.yml
     parameters:
       variableGroupName: ${{ parameters.variableGroupName }}
