@@ -4,8 +4,6 @@
 
 [1]: https://vscode.dev/github/lluppesms/python.function.demo/
 
-![azd Compatible](/Docs/images/AZD_Compatible.png)
-
 [![deploy.infra.and.function](https://github.com/lluppesms/python.function.demo/actions/workflows/deploy-infra-function.yml/badge.svg)](https://github.com/lluppesms/python.function.demo/actions/workflows/deploy-infra-function.yml)
 
 ---
@@ -48,11 +46,9 @@ Fork this repo to your GitHub account or copy the code into a repository that wi
 
 ## Azure Deployment Options
 
-1. [Deploy using AZD Command Line Tool](/Docs/AzdDeploy.md)
+1. [Deploy using Azure DevOps](/Docs/AzureDevOps.md)
 
-2. [Deploy using Azure DevOps](/Docs/AzureDevOps.md)
-
-3. [Deploy using GitHub Actions](/Docs/GitHubActions.md)
+2. [Deploy using GitHub Actions](/Docs/GitHubActions.md)
 
 ---
 
