@@ -24,10 +24,16 @@ trigger:
   #     - '**/*.yaml'
   #     - '**/*.bicep'
 
+parameters:
+  - name: runCodeScan
+    displayName: Run Code Scan
+    type: boolean
+    default: true
+
 # ----------------------------------------------------------------------------------------------------
 stages:
 - template: pipes/function-only-pipe.yml
   parameters:
     variableGroupName: 'PythonDemo'
     environments: ['DEV','PROD']
-    runCodeScan: true
+    runCodeScan: ${{ parameters.runCodeScan }}

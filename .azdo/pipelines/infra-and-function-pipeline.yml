@@ -23,10 +23,6 @@ trigger:
   #     - '**/*.md'
 
 parameters:
-  # - name: runCodeScan
-  #   displayName: Run Security Scan
-  #   default: true
-  #   type: boolean
   - name: runCodeScan
     displayName: Run Code Scan
     type: boolean
@@ -37,6 +33,5 @@ stages:
 - template: pipes/infra-and-function-pipe.yml
   parameters:
     variableGroupName: 'PythonDemo'
-    runCodeScan: ${{ parameters.runCodeScan }}
     environments: ['DEV','PROD']
-    #runCodeScan: true
+    runCodeScan: ${{ parameters.runCodeScan }}
