@@ -27,6 +27,10 @@ parameters:
   #   displayName: Run Security Scan
   #   default: true
   #   type: boolean
+  - name: test
+    displayName: Run Tests?
+    type: boolean
+    default: false
   - name: image
     displayName: Pool Image
     type: string
@@ -41,5 +45,5 @@ stages:
   parameters:
     variableGroupName: 'PythonDemo'
     environments: ['DEV','PROD']
-    runCodeScan: true
+    runCodeScan: {{ parameters.test }}
     #runCodeScan: {{ parameters.runCodeScan }}
