@@ -22,10 +22,16 @@ trigger:
   #   exclude:
   #     - '**/*.md'
 
+parameters:
+  - name: runCodeScan
+    displayName: Run Security Scan
+    default: true
+    type: bool
+    
 # ----------------------------------------------------------------------------------------------------
 stages:
 - template: pipes/infra-and-function-pipe.yml
   parameters:
     variableGroupName: 'PythonDemo'
     environments: ['DEV','PROD']
-    runCodeScan: true
+    runCodeScan: {{ parameters.runCodeScan }}
