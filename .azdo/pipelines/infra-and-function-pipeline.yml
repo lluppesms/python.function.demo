@@ -23,15 +23,23 @@ trigger:
   #     - '**/*.md'
 
 parameters:
-  - name: runCodeScan
-    displayName: Run Security Scan
-    default: true
-    type: boolean
-    
+  # - name: runCodeScan
+  #   displayName: Run Security Scan
+  #   default: true
+  #   type: boolean
+  - name: image
+    displayName: Pool Image
+    type: string
+    default: ubuntu-latest
+    values:
+    - windows-latest
+    - ubuntu-latest
+    - macOS-latest
 # ----------------------------------------------------------------------------------------------------
 stages:
 - template: pipes/infra-and-function-pipe.yml
   parameters:
     variableGroupName: 'PythonDemo'
     environments: ['DEV','PROD']
-    runCodeScan: {{ parameters.runCodeScan }}
+    runCodeScan: true
+    #runCodeScan: {{ parameters.runCodeScan }}
