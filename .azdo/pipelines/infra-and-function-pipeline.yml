@@ -28,9 +28,9 @@ parameters:
   #   default: true
   #   type: boolean
   - name: runCodeScan
-    displayName: Run Code Scan?
+    displayName: Run Code Scan
     type: boolean
-    default: false
+    default: true
 
 # ----------------------------------------------------------------------------------------------------
 stages:
