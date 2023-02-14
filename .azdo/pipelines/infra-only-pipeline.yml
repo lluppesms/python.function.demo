@@ -25,7 +25,7 @@ trigger:
 
 parameters:
   - name: runCodeScan
-    displayName: Run Code Scan
+    displayName: Run MS DevSecOps Scan
     type: boolean
     default: true
 
