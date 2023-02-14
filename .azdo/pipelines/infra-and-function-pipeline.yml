@@ -45,5 +45,5 @@ stages:
   parameters:
     variableGroupName: 'PythonDemo'
     environments: ['DEV','PROD']
-    runCodeScan: {{ parameters.test }}
+    runCodeScan: true
     #runCodeScan: {{ parameters.runCodeScan }}
