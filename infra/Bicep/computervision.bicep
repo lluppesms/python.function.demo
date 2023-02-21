@@ -33,7 +33,7 @@ resource computerVisionResource 'Microsoft.CognitiveServices/accounts@2022-10-01
     apiProperties: {
       statisticsEnabled: false
     }
-    //restore: true
+    restore: true
     customSubDomainName: toLower(computerVisionName)
     publicNetworkAccess: publicNetworkAccess
     networkAcls: {
