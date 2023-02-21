@@ -42,7 +42,7 @@ stages:
           variableGroupName: ${{ parameters.variableGroupName }}
           environmentName: ${{ environmentName }}
 
-  - ${{ if eq(upper(environmentName), 'PROD') }}:  
+  - ${{ if ne(upper(environmentName), 'DEV') }}:  
     - stage: DeployApp${{ environmentName }}
       dependsOn: DeployAppDev
       condition: succeeded('DeployAppDev')

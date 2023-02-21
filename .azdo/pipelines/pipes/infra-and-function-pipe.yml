@@ -44,17 +44,7 @@ stages:
           variableGroupName: ${{ parameters.variableGroupName }}
           environmentName: ${{ environmentName }}
 
-    - stage: DeployApp${{ environmentName }}
-      displayName: Deploy ${{ environmentName }} App
-      dependsOn: CreateInfrastructure${{ environmentName }}
-      condition: succeeded('CreateInfrastructure${{ environmentName }}')
-      jobs:
-      - template: templates/deploy-function-template.yml
-        parameters:
-          variableGroupName: ${{ parameters.variableGroupName }}
-          environmentName: ${{ environmentName }}
-
-  - ${{ if eq(upper(environmentName), 'PROD') }}:  
+  - ${{ if ne(upper(environmentName), 'DEV') }}:  
     - stage: CreateInfrastructure${{ environmentName }}
       displayName: ${{ environmentName }} Infrastructure
       dependsOn: DeployAppDev
@@ -65,12 +55,13 @@ stages:
           variableGroupName: ${{ parameters.variableGroupName }}
           environmentName: ${{ environmentName }}
 
-    - stage: Deploy${{ environmentName }}App
-      displayName: Deploy ${{ environmentName }} App
-      dependsOn: CreateInfrastructure${{ environmentName }}
-      condition: succeeded('CreateInfrastructure${{ environmentName }}')
-      jobs:
-      - template: templates/deploy-function-template.yml
-        parameters:
-          variableGroupName: ${{ parameters.variableGroupName }}
-          environmentName: ${{ environmentName }}
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  - stage: Deploy${{ environmentName }}App
+    displayName: Deploy ${{ environmentName }} App
+    dependsOn: CreateInfrastructure${{ environmentName }}
+    condition: succeeded('CreateInfrastructure${{ environmentName }}')
+    jobs:
+    - template: templates/deploy-function-template.yml
+      parameters:
+        variableGroupName: ${{ parameters.variableGroupName }}
+        environmentName: ${{ environmentName }}
