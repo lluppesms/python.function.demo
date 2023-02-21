@@ -33,5 +33,5 @@ stages:
 - template: pipes/infra-and-function-pipe.yml
   parameters:
     variableGroupName: 'PythonDemo'
-    environments: ['DEV','PROD']
+    environments: ['DEV', 'QA', 'PROD']
     runCodeScan: ${{ parameters.runCodeScan }}
