@@ -33,10 +33,22 @@ stages:
 
 # ----------------------------------------------------------------------------------------------------
 - ${{ each environmentName in parameters.environments }} :
-  - stage: DeployApp${{ environmentName }}
-    displayName: Deploy ${{ environmentName }} Application
-    jobs:
-    - template: templates/deploy-function-template.yml
-      parameters:
-        variableGroupName: ${{ parameters.variableGroupName }}
-        environmentName: ${{ environmentName }}
+  - ${{ if eq(upper(environmentName), 'DEV') }}:
+    - stage: DeployApp${{ environmentName }}
+      displayName: Deploy ${{ environmentName }} Application
+      jobs:
+      - template: templates/deploy-function-template.yml
+        parameters:
+          variableGroupName: ${{ parameters.variableGroupName }}
+          environmentName: ${{ environmentName }}
+
+  - ${{ if eq(upper(environmentName), 'PROD') }}:  
+    - stage: DeployApp${{ environmentName }}
+      dependsOn: DeployAppDev
+      condition: succeeded('DeployAppDev')
+      displayName: Deploy ${{ environmentName }} Application
+      jobs:
+      - template: templates/deploy-function-template.yml
+        parameters:
+          variableGroupName: ${{ parameters.variableGroupName }}
+          environmentName: ${{ environmentName }}

@@ -44,7 +44,7 @@ stages:
           variableGroupName: ${{ parameters.variableGroupName }}
           environmentName: ${{ environmentName }}
 
-    - stage: Deploy${{ environmentName }}App
+    - stage: DeployApp${{ environmentName }}
       displayName: Deploy ${{ environmentName }} App
       dependsOn: CreateInfrastructure${{ environmentName }}
       condition: succeeded('CreateInfrastructure${{ environmentName }}')
@@ -57,8 +57,8 @@ stages:
   - ${{ if eq(upper(environmentName), 'PROD') }}:  
     - stage: CreateInfrastructure${{ environmentName }}
       displayName: ${{ environmentName }} Infrastructure
-      dependsOn: CreateInfrastructureDev
-      condition: succeeded('CreateInfrastructureDev')
+      dependsOn: DeployAppDev
+      condition: succeeded('DeployAppDev')
       jobs:
       - template: templates/create-infra-template.yml
         parameters:
