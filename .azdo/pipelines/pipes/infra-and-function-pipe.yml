@@ -58,8 +58,8 @@ stages:
   - ${{ if ne(upper(environmentName), 'DEV') }}:  
     - stage: CreateInfrastructure${{ environmentName }}
       displayName: ${{ environmentName }} Infrastructure
-      dependsOn: CreateInfrastructureDev
-      condition: succeeded('CreateInfrastructureDev')
+      dependsOn: DeployAppDev
+      condition: succeeded('DeployAppDev')
       jobs:
       - template: templates/create-infra-template.yml
         parameters:
