@@ -34,5 +34,5 @@ stages:
 - template: pipes/infra-only-pipe.yml
   parameters:
     variableGroupName: 'PythonDemo'
-    environments: ['DEV', 'QA', 'PROD']
+    environments: ['DEV','PROD']
     runCodeScan: ${{ parameters.runCodeScan }}
