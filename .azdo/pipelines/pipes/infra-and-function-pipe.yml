@@ -33,22 +33,44 @@ stages:
 
 # ----------------------------------------------------------------------------------------------------
 - ${{ each environmentName in parameters.environments }} :
-  - stage: CreateInfrastructure${{ environmentName }}
-    displayName: ${{ environmentName }} Infrastructure
-    dependsOn: BuildApplication
-    condition: succeeded('BuildApplication')
-    jobs:
-    - template: templates/create-infra-template.yml
-      parameters:
-        variableGroupName: ${{ parameters.variableGroupName }}
-        environmentName: ${{ environmentName }}
+  - ${{ if eq(upper(environmentName), 'DEV') }}:
+    - stage: CreateInfrastructure${{ environmentName }}
+      displayName: ${{ environmentName }} Infrastructure
+      dependsOn: BuildApplication
+      condition: succeeded('BuildApplication')
+      jobs:
+      - template: templates/create-infra-template.yml
+        parameters:
+          variableGroupName: ${{ parameters.variableGroupName }}
+          environmentName: ${{ environmentName }}
 
-  - stage: Deploy${{ environmentName }}App
-    displayName: Deploy ${{ environmentName }} App
-    dependsOn: CreateInfrastructure${{ environmentName }}
-    condition: succeeded('CreateInfrastructure${{ environmentName }}')
-    jobs:
-    - template: templates/deploy-function-template.yml
-      parameters:
-        variableGroupName: ${{ parameters.variableGroupName }}
-        environmentName: ${{ environmentName }}
+    - stage: DeployApp${{ environmentName }}
+      displayName: Deploy ${{ environmentName }} App
+      dependsOn: CreateInfrastructure${{ environmentName }}
+      condition: succeeded('CreateInfrastructure${{ environmentName }}')
+      jobs:
+      - template: templates/deploy-function-template.yml
+        parameters:
+          variableGroupName: ${{ parameters.variableGroupName }}
+          environmentName: ${{ environmentName }}
+
+  - ${{ if eq(upper(environmentName), 'PROD') }}:  
+    - stage: CreateInfrastructure${{ environmentName }}
+      displayName: ${{ environmentName }} Infrastructure
+      dependsOn: DeployAppDev
+      condition: succeeded('DeployAppDev')
+      jobs:
+      - template: templates/create-infra-template.yml
+        parameters:
+          variableGroupName: ${{ parameters.variableGroupName }}
+          environmentName: ${{ environmentName }}
+
+    - stage: Deploy${{ environmentName }}App
+      displayName: Deploy ${{ environmentName }} App
+      dependsOn: CreateInfrastructure${{ environmentName }}
+      condition: succeeded('CreateInfrastructure${{ environmentName }}')
+      jobs:
+      - template: templates/deploy-function-template.yml
+        parameters:
+          variableGroupName: ${{ parameters.variableGroupName }}
+          environmentName: ${{ environmentName }}

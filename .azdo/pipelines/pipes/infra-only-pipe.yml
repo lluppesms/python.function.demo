@@ -24,10 +24,22 @@ stages:
 
 # ----------------------------------------------------------------------------------------------------
 - ${{ each environmentName in parameters.environments }} :
-  - stage: CreateInfrastructure${{ environmentName }}
-    displayName: ${{ environmentName }} Infrastructure
-    jobs:
-    - template: templates/create-infra-template.yml
-      parameters:
-        variableGroupName: ${{ parameters.variableGroupName }}
-        environmentName: ${{ environmentName }}
+  - ${{ if eq(upper(environmentName), 'DEV') }}:
+    - stage: CreateInfrastructure${{ environmentName }}
+      displayName: ${{ environmentName }} Infrastructure
+      jobs:
+      - template: templates/create-infra-template.yml
+        parameters:
+          variableGroupName: ${{ parameters.variableGroupName }}
+          environmentName: ${{ environmentName }}
+          
+  - ${{ if eq(upper(environmentName), 'PROD') }}:  
+    - stage: CreateInfrastructure${{ environmentName }}
+      displayName: ${{ environmentName }} Infrastructure
+      dependsOn: CreateInfrastructureDev
+      condition: succeeded('CreateInfrastructureDev')
+      jobs:
+      - template: templates/create-infra-template.yml
+        parameters:
+          variableGroupName: ${{ parameters.variableGroupName }}
+          environmentName: ${{ environmentName }}

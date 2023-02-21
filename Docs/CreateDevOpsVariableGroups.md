@@ -19,6 +19,8 @@ To create these variable groups, customize and run this command in the Azure Clo
          functionAppSkuTier='Dynamic'
          keyVaultOwnerUserId='owner1SID'
          keyVaultOwnerIpAddress='254.254.254.254'
+         resourceGroupNameDev='rg-lll-pyocr-dev'
+         resourceGroupNameProd='rg-lll-pyocr-prod'
          location='eastus' 
          storageSku='Standard_LRS'
          serviceConnectionName='<yourServiceConnectionName>' 
