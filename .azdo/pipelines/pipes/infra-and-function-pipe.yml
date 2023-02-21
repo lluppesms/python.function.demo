@@ -33,10 +33,19 @@ stages:
 
 # ----------------------------------------------------------------------------------------------------
 - ${{ each environmentName in parameters.environments }} :
+  variables:
+  # use the environment value to determine which dependency to use
+  - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
+    - name: dependencyName
+      value: 'BuildApplication'
+  - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
+    - name: dependencyName
+      value: 'DeployDevApp'
+
   - stage: CreateInfrastructure${{ environmentName }}
     displayName: ${{ environmentName }} Infrastructure
-    dependsOn: BuildApplication
-    condition: succeeded('BuildApplication')
+    dependsOn: ${{ dependencyName }}}
+    condition: succeeded('${{ dependencyName }}}')
     jobs:
     - template: templates/create-infra-template.yml
       parameters:
