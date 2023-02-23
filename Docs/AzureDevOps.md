@@ -46,16 +46,20 @@ This example sends a text message so you will want to have a Twilio account set 
      --name PythonDemo 
      --variables 
          appName='<yourInitials>-pyocr' 
-         environmentCode='dev' 
-         serviceConnectionName='<yourServiceConnection>' 
-         azureSubscription='<yourAzureSubscriptionName>' 
-         subscriptionId='<yourSubscriptionId>' 
-         location='eastus' 
-         storageSku='Standard_LRS' 
-         functionAppSku='Y1' 
-         functionAppSkuFamily='Y' 
-         functionAppSkuTier='Dynamic' 
+         functionName='function'
+         functionAppSku='Y1'
+         functionAppSkuFamily='Y'
+         functionAppSkuTier='Dynamic'
          keyVaultOwnerUserId='owner1SID'
+         location='eastus' 
+         storageSku='Standard_LRS'
+         serviceConnectionName='<yourServiceConnectionName>' 
+         subscriptionIdDev='<yourSubscriptionId>' 
+         subscriptionNameDev='<yourAzureSubscriptionName>' 
+         resourceGroupNameDev='rg-lll-pyocr-dev'
+         subscriptionIdProd='<yourProdSubscriptionId>' 
+         subscriptionNameProd='<yourProdAzureSubscriptionName>' 
+         resourceGroupNameProd='rg-lll-pyocr-prod'
 ```
 
 ---
