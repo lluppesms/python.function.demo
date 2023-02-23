@@ -20,6 +20,14 @@ jobs:
     - name: environmentName
       value: ${{ parameters.environmentName }}
 
+    # use the environment value to determine which resource group we should deploy to
+    - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
+      - name: subscriptionName
+        value: $(subscriptionNameDev)
+    - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
+      - name: subscriptionName
+        value: $(subscriptionNameProd)
+
   steps:
   - bash: |
       functionAppName=$(echo "$(orgName)-$(appName)-$(functionName)-$(environmentName)" | tr '[:upper:]' '[:lower:]')
@@ -34,8 +42,9 @@ jobs:
   - task: CmdLine@2
     inputs:
       script: |
-        echo "serviceConnectionName=$(serviceConnectionName)"
         echo "subscriptionName=$(subscriptionName)"
+        echo "subscriptionNameDev=$(subscriptionNameDev)"
+        echo "subscriptionNameProd=$(subscriptionNameProd)"
         echo "environmentName=$(environmentName)"
         echo "functionAppName=$(functionAppName)"
         echo "Directory of pipeline workspace:"

@@ -20,7 +20,6 @@ To create this variable group, customize and run this command in the Azure Cloud
          keyVaultOwnerUserId='owner1SID'
          location='eastus' 
          storageSku='Standard_LRS'
-         serviceConnectionName='<yourServiceConnectionName>' 
          subscriptionName='<yourDevAzureSubscriptionName>' 
          subscriptionIdDev='<yourDevAzureSubscriptionId>' 
          subscriptionNameDev='<yourDevAzureSubscriptionName>' 
