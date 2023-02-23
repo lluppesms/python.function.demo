@@ -18,29 +18,4 @@ These YML files were designed to run as multi-stage environment deploys (i.e. DE
 
 ## 3. These pipelines needs a variable group named "PythonDemo"
 
-To create these variable groups, customize and run this command in the Azure Cloud Shell, once for each environment:
-
-``` bash
-   az login
-
-   az pipelines variable-group create 
-     --organization=https://dev.azure.com/<yourAzDOOrg>/ 
-     --project='<yourAzDOProject>' 
-     --name PythonDemo 
-     --variables 
-         appName='<yourInitials>-pyocr' 
-         functionName='function'
-         functionAppSku='Y1'
-         functionAppSkuFamily='Y'
-         functionAppSkuTier='Dynamic'
-         keyVaultOwnerUserId='owner1SID'
-         location='eastus' 
-         storageSku='Standard_LRS'
-         serviceConnectionName='<yourServiceConnectionName>' 
-         subscriptionIdDev='<yourSubscriptionId>' 
-         subscriptionNameDev='<yourAzureSubscriptionName>' 
-         resourceGroupNameDev='rg-lll-pyocr-dev'
-         subscriptionIdProd='<yourProdSubscriptionId>' 
-         subscriptionNameProd='<yourProdAzureSubscriptionName>' 
-         resourceGroupNameProd='rg-lll-pyocr-prod'
-```
+See [Create DevOps Variable Group](/Docs/CreateDevOpsVariableGroups.md) for details.

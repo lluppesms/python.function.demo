@@ -33,34 +33,7 @@ These Azure DevOps YML files were designed to run as multi-stage environment dep
 
 ## 4. Creating the variable group "PythonDemo"
 
-To create this variable groups, customize and run this command in the Azure Cloud Shell.
-
-This example sends a text message so you will want to have a Twilio account set up if you want to test with that.
-
-``` bash
-   az login
-
-   az pipelines variable-group create 
-     --organization=https://dev.azure.com/<yourAzDOOrg>/ 
-     --project='<yourAzDOProject>' 
-     --name PythonDemo 
-     --variables 
-         appName='<yourInitials>-pyocr' 
-         functionName='function'
-         functionAppSku='Y1'
-         functionAppSkuFamily='Y'
-         functionAppSkuTier='Dynamic'
-         keyVaultOwnerUserId='owner1SID'
-         location='eastus' 
-         storageSku='Standard_LRS'
-         serviceConnectionName='<yourServiceConnectionName>' 
-         subscriptionIdDev='<yourSubscriptionId>' 
-         subscriptionNameDev='<yourAzureSubscriptionName>' 
-         resourceGroupNameDev='rg-lll-pyocr-dev'
-         subscriptionIdProd='<yourProdSubscriptionId>' 
-         subscriptionNameProd='<yourProdAzureSubscriptionName>' 
-         resourceGroupNameProd='rg-lll-pyocr-prod'
-```
+See [Create DevOps Variable Group](/Docs/CreateDevOpsVariableGroups.md) for details.
 
 ---
 

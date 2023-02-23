@@ -2,11 +2,11 @@
 
 ## Note: The Azure DevOps pipelines needs a variable group named "PythonDemo"
 
-To create these variable groups, customize and run this command in the Azure Cloud Shell:
+To create this variable group, customize and run this command in the Azure Cloud Shell:
 
 ``` bash
    az login
-
+   az account set --subscription <yourAzureSubscriptionId>
    az pipelines variable-group create 
      --organization=https://dev.azure.com/<yourAzDOOrg>/ 
      --project='<yourAzDOProject>' 
@@ -21,10 +21,11 @@ To create these variable groups, customize and run this command in the Azure Clo
          location='eastus' 
          storageSku='Standard_LRS'
          serviceConnectionName='<yourServiceConnectionName>' 
-         subscriptionIdDev='<yourSubscriptionId>' 
-         subscriptionNameDev='<yourAzureSubscriptionName>' 
-         resourceGroupNameDev='rg-lll-pyocr-dev'
-         subscriptionIdProd='<yourProdSubscriptionId>' 
+         subscriptionName='<yourDevAzureSubscriptionName>' 
+         subscriptionIdDev='<yourDevAzureSubscriptionId>' 
+         subscriptionNameDev='<yourDevAzureSubscriptionName>' 
+         resourceGroupNameDev='rg-pyocr-dev'
+         subscriptionIdProd='<yourProdAzureSubscriptionId>' 
          subscriptionNameProd='<yourProdAzureSubscriptionName>' 
-         resourceGroupNameProd='rg-lll-pyocr-prod'
+         resourceGroupNameProd='rg-pyocr-prod'
 ```
