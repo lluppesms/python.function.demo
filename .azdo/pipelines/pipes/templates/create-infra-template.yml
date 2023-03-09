@@ -37,6 +37,12 @@ jobs:
     - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
       - name: envKeyVaultOwnerUserId
         value: $(keyVaultOwnerUserIdProd)
+    - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
+      - name: resourceGroupName
+        value: $(resourceGroupNameDev)
+    - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
+      - name: resourceGroupName
+        value: $(resourceGroupNameProd)
 
   steps:
   - bash: |
