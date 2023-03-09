@@ -20,11 +20,8 @@ To create this variable group, customize and run this command in the Azure Cloud
          keyVaultOwnerUserId='owner1SID'
          location='eastus' 
          storageSku='Standard_LRS'
-         subscriptionName='<yourDevAzureSubscriptionName>' 
-         subscriptionIdDev='<yourDevAzureSubscriptionId>' 
          subscriptionNameDev='<yourDevAzureSubscriptionName>' 
          resourceGroupNameDev='rg-pyocr-dev'
-         subscriptionIdProd='<yourProdAzureSubscriptionId>' 
          subscriptionNameProd='<yourProdAzureSubscriptionName>' 
          resourceGroupNameProd='rg-pyocr-prod'
 ```
