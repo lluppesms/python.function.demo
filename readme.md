@@ -44,15 +44,23 @@ Fork this repo to your GitHub account or copy the code into a repository that wi
 
 ---
 
-## Azure Deployment Options
+## Azure Deployment Guide
 
-1. [Deploy using Azure DevOps](/Docs/AzureDevOps.md)
+[Deploy using Azure DevOps](/Docs/AzureDevOps.md)
 
-2. [Deploy using GitHub Actions](/Docs/GitHubActions.md)
+<!-- [Deploy using GitHub Actions](/Docs/GitHubActions.md) -->
 
 ---
 
 ## Notes
+
+## Responsible AI Terms of Use
+
+The first time you deploy a Computer Vision resource you must agree to the terms of service. You may have to deploy a computer vision resource manually first to accept the terms, then you can deploy other computer vision resources through pipelines. You may get this error the first time you deploy:
+
+![Accept Terms](/Docs/images/AcceptTerms.png)
+
+---
 
 ### Viewing Logs
 
