@@ -103,48 +103,10 @@ jobs:
   # - script: az bicep build --file $(templateFile) --outfile $(compiledJsonFile)
   #   displayName: 'Compile Bicep file'
 
-  # - task: AzureCLI@2
-  #   displayName: 'Create Resource Group'
-  #   inputs:
-  #     azureSubscription: '$(deployToSubscription)'
-  #     scriptType: bash
-  #     scriptLocation: inlineScript
-  #     inlineScript: az group create --name $(deployToResourceGroup) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
-  # # - task: AzureCLI@2
-  # #   displayName: 'Create Resource Group'
-  # #   inputs:
-  # #     azureSubscription: $(subscriptionNameDev)
-  # #     scriptType: bash
-  # #     scriptLocation: inlineScript
-  # #     inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
-
-  # - task: AzureResourceManagerTemplateDeployment@3
-  #   displayName: 'Publish Bicep Resources'
-  #   inputs:
-  #     csmFile: $(templateFile)
-  #     overrideParameters: >
-  #       -orgName $(orgName)
-  #       -appName $(appName)
-  #       -environmentCode $(environmentNameLower)
-  #       -keyVaultOwnerUserId $(keyVaultOwnerUserId)
-  #       -keyVaultOwnerIpAddress $(keyVaultOwnerIpAddress)
-  #       -location $(location)
-  #       -storageSku $(storageSku)
-  #       -functionName $(functionName)
-  #       -functionAppSku $(functionAppSku)
-  #       -functionAppSkuFamily $(functionAppSkuFamily)
-  #       -functionAppSkuTier $(functionAppSkuTier)
-  #       -runDateTime $(runDateTime)
-  #     deploymentScope: 'Resource Group'
-  #     azureResourceManagerConnection: '$(deployToSubscription)'
-  #     action: 'Create Or Update Resource Group'
-  #     resourceGroupName: $(deployToResourceGroup)
-  #     location: '$(location)'
-  #     templateLocation: 'Linked artifact'
-  #     deploymentMode: 'Incremental'
-
-
-  # Works but is not DRY!
+  # ----------------------------------------------------------------------------------------------------
+  # This works to deploy to two environments, but is not DRY! (Don't repeat yourself!)
+  # The subscriptionName variable doesn't like to be set dynamically for some reason
+  # ----------------------------------------------------------------------------------------------------
   - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
     - task: AzureCLI@2
       displayName: 'Create Resource Group'

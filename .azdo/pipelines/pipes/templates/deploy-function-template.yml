@@ -52,11 +52,27 @@ jobs:
     displayName: 'Display Variables and Tree'
     continueOnError: true
 
-  - task: AzureFunctionApp@1
-    displayName: 'Function App Deploy'
-    retryCountOnTaskFailure: 2
-    inputs:
-      azureSubscription: $(subscriptionName)
-      appType: functionAppLinux
-      appName: $(functionAppName)
-      package: $(Pipeline.Workspace)/*.zip
+  # ----------------------------------------------------------------------------------------------------
+  # This works to deploy to two environments, but is not DRY! (Don't repeat yourself!)
+  # The subscriptionName variable doesn't like to be set dynamically for some reason
+  # ----------------------------------------------------------------------------------------------------
+  - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
+    - task: AzureFunctionApp@1
+      displayName: 'Function App Deploy'
+      retryCountOnTaskFailure: 2
+      inputs:
+        azureSubscription: $(subscriptionNameDev)
+        appType: functionAppLinux
+        appName: $(functionAppName)
+        package: $(Pipeline.Workspace)/*.zip
+
+  # ----------------------------------------------------------------------------------------------------
+  - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
+    - task: AzureFunctionApp@1
+      displayName: 'Function App Deploy'
+      retryCountOnTaskFailure: 2
+      inputs:
+        azureSubscription: $(subscriptionNameProd)
+        appType: functionAppLinux
+        appName: $(functionAppName)
+        package: $(Pipeline.Workspace)/*.zip
