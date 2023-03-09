@@ -96,7 +96,7 @@ jobs:
   - task: AzureCLI@2
     displayName: 'Create Resource Group'
     inputs:
-      azureSubscription: '${{ if eq(variables.environmentNameUpper, 'DEV') then $(subscriptionNameDev) else $(subscriptionNameProd) }}'
+      azureSubscription: ${{ if eq(variables.environmentNameUpper, 'DEV') ? $(subscriptionNameDev) : $(subscriptionNameProd) }}
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
