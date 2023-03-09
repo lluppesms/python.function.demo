@@ -106,7 +106,7 @@ jobs:
   - task: AzureCLI@2
     displayName: 'Create Resource Group'
     inputs:
-      azureSubscription: $(deployToSubscription)
+      azureSubscription: '$(deployToSubscription)'
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: az group create --name $(deployToResourceGroup) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
@@ -136,7 +136,7 @@ jobs:
         -functionAppSkuTier $(functionAppSkuTier)
         -runDateTime $(runDateTime)
       deploymentScope: 'Resource Group'
-      azureResourceManagerConnection: $(deployToSubscription)
+      azureResourceManagerConnection: '$(deployToSubscription)'
       action: 'Create Or Update Resource Group'
       resourceGroupName: $(deployToResourceGroup)
       location: '$(location)'
