@@ -24,7 +24,7 @@ jobs:
 - job: CreateInfraJob
   displayName: Create Infrastructure
   variables:
-    # - group: ${{ parameters.variableGroupName }}
+    - group: ${{ parameters.variableGroupName }}
     - name: environmentNameUpper
       value: ${{ upper(parameters.environmentName) }}
     - name: environmentNameLower
