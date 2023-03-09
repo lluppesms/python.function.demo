@@ -27,19 +27,27 @@ stages:
   - ${{ if eq(upper(environmentName), 'DEV') }}:
     - stage: CreateInfrastructure${{ environmentName }}
       displayName: ${{ environmentName }} Infrastructure
+      variables:
+        group: ${{ parameters.variableGroupName }}
       jobs:
       - template: templates/create-infra-template.yml
         parameters:
           variableGroupName: ${{ parameters.variableGroupName }}
           environmentName: ${{ environmentName }}
-          
+          deployToSubscription: ${{ subscriptionNameDev }}
+          deployToResourceGroup: ${{ resourceGroupDev }}
+
   - ${{ if ne(upper(environmentName), 'DEV') }}:  
     - stage: CreateInfrastructure${{ environmentName }}
       displayName: ${{ environmentName }} Infrastructure
       dependsOn: CreateInfrastructureDev
       condition: succeeded('CreateInfrastructureDev')
+      variables:
+        group: ${{ parameters.variableGroupName }}
       jobs:
       - template: templates/create-infra-template.yml
         parameters:
           variableGroupName: ${{ parameters.variableGroupName }}
           environmentName: ${{ environmentName }}
+          deployToSubscription: ${{ subscriptionNameProd }}
+          deployToResourceGroup: ${{ resourceGroupProd }}
