@@ -32,12 +32,6 @@ jobs:
 
     # use the environment value to determine which resource group we should deploy to
     - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
-      - name: envKeyVaultOwnerUserId
-        value: $(keyVaultOwnerUserIdDev)
-    - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
-      - name: envKeyVaultOwnerUserId
-        value: $(keyVaultOwnerUserIdProd)
-    - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
       - name: resourceGroupName
         value: $(resourceGroupNameDev)
     - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
@@ -72,9 +66,6 @@ jobs:
       echo "functionAppSkuFamily=$(functionAppSkuFamily)"
       echo "functionAppSkuTier=$(functionAppSkuTier)"
       echo "keyVaultOwnerUserId=$(keyVaultOwnerUserId)"
-      echo "envKeyVaultOwnerUserId=$(envKeyVaultOwnerUserId)"
-      echo "keyVaultOwnerUserIdDev=$(keyVaultOwnerUserIdDev)"
-      echo "keyVaultOwnerUserIdProd=$(keyVaultOwnerUserIdProd)"
       echo "keyVaultOwnerIpAddress=$(keyVaultOwnerIpAddress)"
       echo "runDateTime=$(runDateTime)"
       echo "runDateTimeZ=$(runDateTimeZ)"
@@ -116,7 +107,7 @@ jobs:
           -orgName $(orgName)
           -appName $(appName)
           -environmentCode $(environmentNameLower)
-          -keyVaultOwnerUserId $(envKeyVaultOwnerUserId)
+          -keyVaultOwnerUserId $(keyVaultOwnerUserId)
           -keyVaultOwnerIpAddress $(keyVaultOwnerIpAddress)
           -location $(location)
           -storageSku $(storageSku)
