@@ -12,13 +12,14 @@ To create this variable group, customize and run this command in the Azure Cloud
      --project='<yourAzDOProject>' 
      --name PythonDemo 
      --variables 
-         appName='<yourInitials>-pyocr' 
+         appName='pyocr' 
          functionName='function'
          functionAppSku='Y1'
          functionAppSkuFamily='Y'
          functionAppSkuTier='Dynamic'
          keyVaultOwnerUserId='owner1SID'
          location='eastus' 
+         orgName='<yourInitials>'
          storageSku='Standard_LRS'
          subscriptionNameDev='<yourDevAzureSubscriptionName>' 
          resourceGroupNameDev='rg-pyocr-dev'

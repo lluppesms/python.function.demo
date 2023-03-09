@@ -30,6 +30,14 @@ jobs:
     - name: compiledJsonFile
       value: '${{ parameters.templateFolderName }}/compiled.json'
 
+    # use the environment value to determine which resource group we should deploy to
+    - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
+      - name: resourceGroupName
+        value: $(resourceGroupNameDev)
+    - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
+      - name: resourceGroupName
+        value: $(resourceGroupNameProd)
+
   steps:
   - bash: |
       runDateTime=$(echo $(date '+%Y%m%d-%H%M%S'))
