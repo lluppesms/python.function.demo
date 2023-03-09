@@ -34,8 +34,8 @@ stages:
         parameters:
           variableGroupName: ${{ parameters.variableGroupName }}
           environmentName: ${{ environmentName }}
-          deployToSubscription: ${{ variables.subscriptionNameDev }}
-          deployToResourceGroup: ${{ variables.resourceGroupDev }}
+          deployToSubscription: $(subscriptionNameDev)
+          deployToResourceGroup: $(resourceGroupDev)
 
   - ${{ if ne(upper(environmentName), 'DEV') }}:  
     - stage: CreateInfrastructure${{ environmentName }}
@@ -49,5 +49,5 @@ stages:
         parameters:
           variableGroupName: ${{ parameters.variableGroupName }}
           environmentName: ${{ environmentName }}
-          deployToSubscription: ${{ variables.subscriptionNameProd }}
-          deployToResourceGroup: ${{ variables.resourceGroupProd }}
+          deployToSubscription: $(subscriptionNameProd)
+          deployToResourceGroup: $(resourceGroupProd)
