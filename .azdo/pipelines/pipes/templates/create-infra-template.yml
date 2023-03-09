@@ -106,10 +106,10 @@ jobs:
     - task: AzureCLI@2
       displayName: 'Create Resource Group'
       inputs:
-        azureSubscription: '$(deployToSubscription)'
+        azureSubscription: $(subscriptionNameDev) # '$(deployToSubscription)'
         scriptType: bash
-        scriptLocation: inlineScript
-        inlineScript: az group create --name $(deployToResourceGroup) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
+        scriptLocation: inlineScript    # deployToResourceGroup
+        inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
 
     - task: AzureResourceManagerTemplateDeployment@3
       displayName: 'Publish Bicep Resources'
