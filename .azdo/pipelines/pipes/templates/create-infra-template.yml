@@ -24,7 +24,7 @@ jobs:
 - job: CreateInfraJob
   displayName: Create Infrastructure
   variables:
-    - group: ${{ parameters.variableGroupName }}
+    # - group: ${{ parameters.variableGroupName }}
     - name: environmentNameUpper
       value: ${{ upper(parameters.environmentName) }}
     - name: environmentNameLower
@@ -66,6 +66,7 @@ jobs:
 
   - bash: |
       echo "deployToSubscription=$(deployToSubscription)"
+      echo "deployToResourceGroup=$(deployToResourceGroup)"
       echo "subscriptionName=$(subscriptionName)"
       echo "subscriptionNameDev=$(subscriptionNameDev)"
       echo "subscriptionNameProd=$(subscriptionNameProd)"
@@ -105,7 +106,7 @@ jobs:
     - task: AzureCLI@2
       displayName: 'Create Resource Group'
       inputs:
-        azureSubscription: $(deployToSubscription)
+        azureSubscription: '$(deployToSubscription)'
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: az group create --name $(deployToResourceGroup) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
