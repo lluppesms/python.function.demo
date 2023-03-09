@@ -30,6 +30,14 @@ jobs:
     - name: compiledJsonFile
       value: '${{ parameters.templateFolderName }}/compiled.json'
 
+    # use the environment value to determine which resource group we should deploy to
+    - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
+      - name: envKeyVaultOwnerUserId
+        value: $(keyVaultOwnerUserIdDev)
+    - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
+      - name: envKeyVaultOwnerUserId
+        value: $(keyVaultOwnerUserIdProd)
+
   steps:
   - bash: |
       runDateTime=$(echo $(date '+%Y%m%d-%H%M%S'))
@@ -58,6 +66,9 @@ jobs:
       echo "functionAppSkuFamily=$(functionAppSkuFamily)"
       echo "functionAppSkuTier=$(functionAppSkuTier)"
       echo "keyVaultOwnerUserId=$(keyVaultOwnerUserId)"
+      echo "envKeyVaultOwnerUserId=$(envKeyVaultOwnerUserId)"
+      echo "keyVaultOwnerUserIdDev=$(keyVaultOwnerUserIdDev)"
+      echo "keyVaultOwnerUserIdProd=$(keyVaultOwnerUserIdProd)"
       echo "keyVaultOwnerIpAddress=$(keyVaultOwnerIpAddress)"
       echo "runDateTime=$(runDateTime)"
       echo "runDateTimeZ=$(runDateTimeZ)"
@@ -99,7 +110,7 @@ jobs:
           -orgName $(orgName)
           -appName $(appName)
           -environmentCode $(environmentNameLower)
-          -keyVaultOwnerUserId $(keyVaultOwnerUserId)
+          -keyVaultOwnerUserId $(envKeyVaultOwnerUserId)
           -keyVaultOwnerIpAddress $(keyVaultOwnerIpAddress)
           -location $(location)
           -storageSku $(storageSku)
