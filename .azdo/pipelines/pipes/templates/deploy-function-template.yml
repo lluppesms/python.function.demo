@@ -20,14 +20,6 @@ jobs:
     - name: environmentName
       value: ${{ parameters.environmentName }}
 
-    # use the environment value to determine which resource group we should deploy to
-    - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
-      - name: subscriptionName
-        value: $(subscriptionNameDev)
-    - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
-      - name: subscriptionName
-        value: $(subscriptionNameProd)
-
   steps:
   - bash: |
       functionAppName=$(echo "$(orgName)-$(appName)-$(functionName)-$(environmentName)" | tr '[:upper:]' '[:lower:]')
@@ -42,10 +34,9 @@ jobs:
   - task: CmdLine@2
     inputs:
       script: |
-        echo "subscriptionName=$(subscriptionName)"
+        echo "environmentName=$(environmentName)"
         echo "subscriptionNameDev=$(subscriptionNameDev)"
         echo "subscriptionNameProd=$(subscriptionNameProd)"
-        echo "environmentName=$(environmentName)"
         echo "functionAppName=$(functionAppName)"
         echo "Directory of pipeline workspace:"
         tree $(Pipeline.Workspace)
@@ -54,6 +45,7 @@ jobs:
 
   # ----------------------------------------------------------------------------------------------------
   # This works to deploy to two environments, but is not DRY! (Don't repeat yourself!)
+  # You will need one of these for each subscription you want to deploy to
   # The subscriptionName variable doesn't like to be set dynamically for some reason
   # ----------------------------------------------------------------------------------------------------
   - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:

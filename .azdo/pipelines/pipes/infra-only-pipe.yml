@@ -23,6 +23,8 @@ stages:
         environmentName: 'DEV'
 
 # ----------------------------------------------------------------------------------------------------
+# First stage - no dependencies
+# ----------------------------------------------------------------------------------------------------
 - ${{ each environmentName in parameters.environments }} :
   - ${{ if eq(upper(environmentName), 'DEV') }}:
     - stage: CreateInfrastructure${{ environmentName }}
@@ -33,6 +35,9 @@ stages:
           variableGroupName: ${{ parameters.variableGroupName }}
           environmentName: ${{ environmentName }}
           
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+  # Second level stages - dependent on first stage
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   - ${{ if ne(upper(environmentName), 'DEV') }}:  
     - stage: CreateInfrastructure${{ environmentName }}
       displayName: ${{ environmentName }} Infrastructure

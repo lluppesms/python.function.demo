@@ -6,10 +6,6 @@ parameters:
   default: 'myVariableGroup'
 - name: environmentName
   default: 'DEV'
-- name: deployToSubscription
-  default: ''
-- name: deployToResourceGroup
-  default: ''
 - name: templateFolderName
   default: 'infra/Bicep'
 - name: templateFileName
@@ -33,24 +29,6 @@ jobs:
       value: '$(Pipeline.Workspace)/s/${{ parameters.templateFolderName }}/${{ parameters.templateFileName }}'
     - name: compiledJsonFile
       value: '${{ parameters.templateFolderName }}/compiled.json'
-    - name: deployToSubscription
-      value: ${{ parameters.deployToSubscription }}
-    - name: deployToResourceGroup
-      value: ${{ parameters.deployToResourceGroup }}
-
-    # use the environment value to determine which resource group we should deploy to
-    - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
-      - name: subscriptionName
-        value: $(subscriptionNameDev)
-    - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
-      - name: resourceGroupName
-        value: $(resourceGroupNameDev)
-    - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
-      - name: subscriptionName
-        value: $(subscriptionNameProd)
-    - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
-      - name: resourceGroupName
-        value: $(resourceGroupNameProd)
 
   steps:
   - bash: |
@@ -65,16 +43,12 @@ jobs:
     continueOnError: true
 
   - bash: |
-      echo "deployToSubscription=$(deployToSubscription)"
-      echo "deployToResourceGroup=$(deployToResourceGroup)"
-      echo "subscriptionName=$(subscriptionName)"
-      echo "subscriptionNameDev=$(subscriptionNameDev)"
-      echo "subscriptionNameProd=$(subscriptionNameProd)"
-      echo "resourceGroupName=$(resourceGroupName)"
-      echo "resourceGroupNameDev=$(resourceGroupNameDev)"
-      echo "resourceGroupNameProd=$(resourceGroupNameProd)"
       echo "environmentNameUpper=$(environmentNameUpper)"
       echo "environmentNameLower=$(environmentNameLower)"
+      echo "subscriptionNameDev=$(subscriptionNameDev)"
+      echo "subscriptionNameProd=$(subscriptionNameProd)"
+      echo "resourceGroupNameDev=$(resourceGroupNameDev)"
+      echo "resourceGroupNameProd=$(resourceGroupNameProd)"
       echo "location=$(location)"
       echo "orgName=$(orgName)"
       echo "appName=$(appName)"
@@ -105,6 +79,7 @@ jobs:
 
   # ----------------------------------------------------------------------------------------------------
   # This works to deploy to two environments, but is not DRY! (Don't repeat yourself!)
+  # You will need one of these for each subscription you want to deploy to
   # The subscriptionName variable doesn't like to be set dynamically for some reason
   # ----------------------------------------------------------------------------------------------------
   - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
