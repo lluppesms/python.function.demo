@@ -103,12 +103,19 @@ jobs:
   # - script: az bicep build --file $(templateFile) --outfile $(compiledJsonFile)
   #   displayName: 'Compile Bicep file'
 
+    # - task: AzureCLI@2
+    #   displayName: 'Create Resource Group'
+    #   inputs:
+    #     azureSubscription: $(subscriptionNameDev) # '$(deployToSubscription)'
+    #     scriptType: bash
+    #     scriptLocation: inlineScript    # deployToResourceGroup
+    #     inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
     - task: AzureCLI@2
       displayName: 'Create Resource Group'
       inputs:
-        azureSubscription: $(subscriptionNameDev) # '$(deployToSubscription)'
+        azureSubscription: $(subscriptionNameDev)
         scriptType: bash
-        scriptLocation: inlineScript    # deployToResourceGroup
+        scriptLocation: inlineScript
         inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
 
     - task: AzureResourceManagerTemplateDeployment@3
