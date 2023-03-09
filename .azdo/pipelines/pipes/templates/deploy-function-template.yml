@@ -19,6 +19,8 @@ jobs:
     - group: ${{ parameters.variableGroupName }}
     - name: environmentName
       value: ${{ parameters.environmentName }}
+    - name: environmentNameUpper
+      value: ${{ upper(parameters.environmentName) }}
 
   steps:
   - bash: |
