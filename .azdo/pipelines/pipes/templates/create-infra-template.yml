@@ -6,6 +6,10 @@ parameters:
   default: 'myVariableGroup'
 - name: environmentName
   default: 'DEV'
+- name: deployToSubscription
+  default: ''
+- name: deployToResourceGroup
+  default: ''
 - name: templateFolderName
   default: 'infra/Bicep'
 - name: templateFileName
@@ -29,6 +33,10 @@ jobs:
       value: '$(Pipeline.Workspace)/s/${{ parameters.templateFolderName }}/${{ parameters.templateFileName }}'
     - name: compiledJsonFile
       value: '${{ parameters.templateFolderName }}/compiled.json'
+    - name: deployToSubscription
+      value: ${{ parameters.deployToSubscription }}
+    - name: deployToResourceGroup
+      value: ${{ parameters.deployToResourceGroup }}
 
     # use the environment value to determine which resource group we should deploy to
     - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
@@ -57,6 +65,8 @@ jobs:
     continueOnError: true
 
   - bash: |
+      echo "deployToSubscription=$(deployToSubscription)"
+      echo "deployToResourceGroup=$(deployToResourceGroup)"
       echo "subscriptionName=$(subscriptionName)"
       echo "subscriptionNameDev=$(subscriptionNameDev)"
       echo "subscriptionNameProd=$(subscriptionNameProd)"
@@ -93,35 +103,75 @@ jobs:
   # - script: az bicep build --file $(templateFile) --outfile $(compiledJsonFile)
   #   displayName: 'Compile Bicep file'
 
-  - task: AzureCLI@2
-    displayName: 'Create Resource Group'
-    inputs:
-      azureSubscription: $(subscriptionName)
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
+  # ----------------------------------------------------------------------------------------------------
+  # This works to deploy to two environments, but is not DRY! (Don't repeat yourself!)
+  # The subscriptionName variable doesn't like to be set dynamically for some reason
+  # ----------------------------------------------------------------------------------------------------
+  - ${{ if eq(variables.environmentNameUpper, 'DEV') }}:
+    - task: AzureCLI@2
+      displayName: 'Create Resource Group'
+      inputs:
+        azureSubscription: $(subscriptionNameDev)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
 
-  - task: AzureResourceManagerTemplateDeployment@3
-    displayName: 'Publish Bicep Resources'
-    inputs:
-      csmFile: $(templateFile)
-      overrideParameters: >
-        -orgName $(orgName)
-        -appName $(appName)
-        -environmentCode $(environmentNameLower)
-        -keyVaultOwnerUserId $(keyVaultOwnerUserId)
-        -keyVaultOwnerIpAddress $(keyVaultOwnerIpAddress)
-        -location $(location)
-        -storageSku $(storageSku)
-        -functionName $(functionName)
-        -functionAppSku $(functionAppSku)
-        -functionAppSkuFamily $(functionAppSkuFamily)
-        -functionAppSkuTier $(functionAppSkuTier)
-        -runDateTime $(runDateTime)
-      deploymentScope: 'Resource Group'
-      azureResourceManagerConnection: '$(subscriptionName)'
-      action: 'Create Or Update Resource Group'
-      resourceGroupName: '$(resourceGroupName)'
-      location: '$(location)'
-      templateLocation: 'Linked artifact'
-      deploymentMode: 'Incremental'
+    - task: AzureResourceManagerTemplateDeployment@3
+      displayName: 'Publish Bicep Resources'
+      inputs:
+        csmFile: $(templateFile)
+        overrideParameters: >
+          -orgName $(orgName)
+          -appName $(appName)
+          -environmentCode $(environmentNameLower)
+          -keyVaultOwnerUserId $(keyVaultOwnerUserId)
+          -keyVaultOwnerIpAddress $(keyVaultOwnerIpAddress)
+          -location $(location)
+          -storageSku $(storageSku)
+          -functionName $(functionName)
+          -functionAppSku $(functionAppSku)
+          -functionAppSkuFamily $(functionAppSkuFamily)
+          -functionAppSkuTier $(functionAppSkuTier)
+          -runDateTime $(runDateTime)
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: '$(subscriptionNameDev)'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: '$(resourceGroupName)'
+        location: '$(location)'
+        templateLocation: 'Linked artifact'
+        deploymentMode: 'Incremental'
+
+  # ----------------------------------------------------------------------------------------------------
+  - ${{ if eq(variables.environmentNameUpper, 'PROD') }}:
+    - task: AzureCLI@2
+      displayName: 'Create Resource Group'
+      inputs:
+        azureSubscription: $(subscriptionNameProd)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: az group create --name $(resourceGroupName) --location $(location) --tags LastDeployed=$(runDateTime) Organization=$(orgName) Application=$(appName) Environment=$(environmentNameUpper)
+
+    - task: AzureResourceManagerTemplateDeployment@3
+      displayName: 'Publish Bicep Resources'
+      inputs:
+        csmFile: $(templateFile)
+        overrideParameters: >
+          -orgName $(orgName)
+          -appName $(appName)
+          -environmentCode $(environmentNameLower)
+          -keyVaultOwnerUserId $(keyVaultOwnerUserId)
+          -keyVaultOwnerIpAddress $(keyVaultOwnerIpAddress)
+          -location $(location)
+          -storageSku $(storageSku)
+          -functionName $(functionName)
+          -functionAppSku $(functionAppSku)
+          -functionAppSkuFamily $(functionAppSkuFamily)
+          -functionAppSkuTier $(functionAppSkuTier)
+          -runDateTime $(runDateTime)
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: '$(subscriptionNameProd)'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: '$(resourceGroupName)'
+        location: '$(location)'
+        templateLocation: 'Linked artifact'
+        deploymentMode: 'Incremental'
