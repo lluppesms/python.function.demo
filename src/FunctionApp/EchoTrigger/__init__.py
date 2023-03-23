@@ -23,13 +23,13 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     try:
       name = req.params.get('name')
-    #   if not name:
-    #     req_body = req.get_json()
-    #   if req_body:
-    #     name = req_body.get('name')
+      if not name:
+        req_body = req.get_json()
+      if req_body:
+        name = req_body.get('name')
       if not name:
         name = 'Nobody'
-    except ValueError:
+    except:
       name = 'Unknown'
       pass
 
