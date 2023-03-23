@@ -3,7 +3,14 @@ import os
 
 import azure.functions as func
 
-def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
+app = func.FunctionApp()
+@app.function_name(name="ImageFileTrigger")
+@app.route(route="file")
+@app.blob_input(arg_name="inputblob", connection="DataStorageConnectionAppSetting")
+@app.blob_output(arg_name="outputblob", connection="DataStorageConnectionAppSetting")
+def main(req: func.HttpRequest, inputblob: str, outputblob: func.Out[str]):
+
+#def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
     functionName = "TextFileTrigger"
     extensionsToProcess = ['.txt','.md']
 
