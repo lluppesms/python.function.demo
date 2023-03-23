@@ -35,5 +35,5 @@ stages:
 - template: pipes/function-only-pipe.yml
   parameters:
     variableGroupName: 'PythonDemo'
-    environments: ['DEV','PROD']
+    environments: ['DEV'] #,'PROD']
     runCodeScan: ${{ parameters.runCodeScan }}
