@@ -9,15 +9,15 @@ import azure.functions as func
 from azure.cognitiveservices.vision.computervision import ComputerVisionClient
 from msrest.authentication import CognitiveServicesCredentials
 
-app = func.FunctionApp()
-@app.function_name(name="ImageFileTrigger")
-@app.route(route="file")
-@app.blob_input(arg_name="inputblob", path="inputfiles/{name}", connection="DataStorageConnectionAppSetting")
-@app.blob_output(arg_name="outputblob", path="outputfiles/{name}", connection="DataStorageConnectionAppSetting")
-def main(req: func.HttpRequest, inputblob: str, outputblob: func.Out[str]):
+# doesn't seem to work...
+# app = func.FunctionApp()
+# @app.function_name(name="ImageFileTrigger")
+# @app.route(route="file")
+# @app.blob_input(arg_name="inputblob", path="inputfiles/{name}", connection="DataStorageConnectionAppSetting")
+# @app.blob_output(arg_name="outputblob", path="outputfiles/{name}", connection="DataStorageConnectionAppSetting")
+# def main(inputblob: str, outputblob: func.Out[str]):
 
-#def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
-
+def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
     functionName = "ImageFileTrigger"
     extensionsToProcess = ['.jpg','.jpeg','.gif','.png','.tif','.tiff']
 

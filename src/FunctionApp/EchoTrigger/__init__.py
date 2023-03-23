@@ -25,7 +25,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
       name = req.params.get('name')
       if not name:
         req_body = req.get_json()
-      else:
         name = req_body.get('name')
       if not name:
         name = 'Nobody'
