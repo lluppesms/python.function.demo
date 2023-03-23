@@ -21,14 +21,17 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     # logging.info(f'Environment Variable SECRET_ENVIRONMENT={secretEnvironment}')
 
-    name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
+    try:
+      name = req.params.get('name')
+      if not name:
+        req_body = req.get_json()
+      else:
+        name = req_body.get('name')
+      if not name:
+        name = 'Nobody'
+    except ValueError:
+      name = 'Unknown'
+      pass
 
     logging.info(f"{functionName}:   Received name: '{name}'.")
     if name:
