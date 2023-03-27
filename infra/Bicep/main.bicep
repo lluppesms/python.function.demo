@@ -152,8 +152,8 @@ module functionAppSettingsModule 'functionpythonappsettings.bicep' = {
   dependsOn: [ keyVaultSecret1, keyVaultSecret2, keyVaultSecret3, keyVaultSecret4, functionModule ]
   params: {
     functionAppName: functionModule.outputs.name
-    // functionStorageAccountName: functionModule.outputs.storageAccountName
-    // functionInsightsKey: functionModule.outputs.insightsKey
+    functionStorageAccountName: functionModule.outputs.storageAccountName
+    functionInsightsKey: functionModule.outputs.insightsKey
     customAppSettings: {
       DataStorageConnectionAppSetting: '@Microsoft.KeyVault(VaultName=${keyVaultModule.outputs.name};SecretName=DataStorageConnectionAppSetting)'
       ComputerVisionAccessKey: '@Microsoft.KeyVault(VaultName=${keyVaultModule.outputs.name};SecretName=ComputerVisionAccessKey)'
