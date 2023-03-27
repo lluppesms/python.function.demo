@@ -25,8 +25,9 @@ param customAppSettings object = {}
 
 resource functionAppResource 'Microsoft.Web/sites@2022-03-01' existing = { name: functionAppName }
 var BASE_SLOT_APPSETTINGS = list('${functionAppResource.id}/config/appsettings', functionAppResource.apiVersion).properties
+var updatedSettings = union(BASE_SLOT_APPSETTINGS, customAppSettings)
 resource siteConfig 'Microsoft.Web/sites/config@2021-02-01' = {
   name: 'appsettings'
   parent: functionAppResource
-  properties: union(BASE_SLOT_APPSETTINGS, customAppSettings)
+  properties: updatedSettings
 }
