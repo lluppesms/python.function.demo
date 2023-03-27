@@ -100,10 +100,10 @@ resource functionAppResource 'Microsoft.Web/sites@2022-03-01' = {
           name: 'AzureWebJobsStorage'
           value: functionStorageAccountConnectionString
         }
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: appInsightsResource.properties.InstrumentationKey
-        }
+        // {
+        //   name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+        //   value: appInsightsResource.properties.InstrumentationKey
+        // }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
           value: 'InstrumentationKey=${appInsightsResource.properties.InstrumentationKey}'
@@ -123,6 +123,10 @@ resource functionAppResource 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'WEBSITE_CONTENTSHARE'
           value: toLower(functionAppName)
+        }
+        {
+          name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
+          value: 'false'
         }
       ]
       ftpsState: 'FtpsOnly'
