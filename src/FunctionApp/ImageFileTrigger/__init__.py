@@ -9,14 +9,6 @@ import azure.functions as func
 from azure.cognitiveservices.vision.computervision import ComputerVisionClient
 from msrest.authentication import CognitiveServicesCredentials
 
-# doesn't seem to work...
-# app = func.FunctionApp()
-# @app.function_name(name="ImageFileTrigger")
-# @app.route(route="file")
-# @app.blob_input(arg_name="inputblob", path="inputfiles/{name}", connection="DataStorageConnectionAppSetting")
-# @app.blob_output(arg_name="outputblob", path="outputfiles/{name}", connection="DataStorageConnectionAppSetting")
-# def main(inputblob: str, outputblob: func.Out[str]):
-
 def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
     functionName = "ImageFileTrigger"
     extensionsToProcess = ['.jpg','.jpeg','.gif','.png','.tif','.tiff']
@@ -42,11 +34,22 @@ def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
                 myStream.seek(0)
                 image_analysis = client.recognize_printed_text_in_stream(image=myStream, language="en")
 
-            lines = image_analysis.regions[0].lines
-            logging.info(f"{functionName}:   Found {len(lines)} lines of text in {inputblob.name}!")
-            for line in lines:
-                line_text = " ".join([word.text for word in line.words])
-                file_text = file_text + line_text + "\n"
+            # Simple Version - V1 - only reads first region
+            # lines = image_analysis.regions[0].lines
+            # logging.info(f"{functionName}:   Found {len(lines)} lines of text in {inputblob.name}!")
+            # for line in lines:
+            #     line_text = " ".join([word.text for word in line.words])
+            #     file_text = file_text + line_text + "\n"
+
+            logging.info(f"{functionName}:   Found {len(image_analysis.regions)} regions of text in {inputblob.name}")
+            regionCount = 0
+            for scanRegion in image_analysis.regions:
+                regionCount = regionCount + 1
+                lines = scanRegion.lines
+                logging.info(f"{functionName}:   Found {len(lines)} lines of text in region {regionCount}!")
+                for line in lines:
+                    line_text = " ".join([word.text for word in line.words])
+                    file_text = file_text + line_text + "\n"
 
             #logging.info(f"{functionName}:   Found results: {file_text}")
             logging.info(f"{functionName}:   Writing results to output folder {inputblob.name}.txt")
