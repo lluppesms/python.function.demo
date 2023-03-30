@@ -34,13 +34,6 @@ def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
                 myStream.seek(0)
                 image_analysis = client.recognize_printed_text_in_stream(image=myStream, language="en")
 
-            # Simple Version - V1 - only reads first region
-            # lines = image_analysis.regions[0].lines
-            # logging.info(f"{functionName}:   Found {len(lines)} lines of text in {inputblob.name}!")
-            # for line in lines:
-            #     line_text = " ".join([word.text for word in line.words])
-            #     file_text = file_text + line_text + "\n"
-
             logging.info(f"{functionName}:   Found {len(image_analysis.regions)} regions of text in {inputblob.name}")
             regionCount = 0
             for scanRegion in image_analysis.regions:
