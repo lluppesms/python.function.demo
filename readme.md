@@ -36,6 +36,7 @@ The following packages are required to run the function locally:
 
 ``` bash
 pip install --upgrade azure-cognitiveservices-vision-computervision
+pip install --upgrade azure-ai-formrecognizer
 ```
 
 ### Get the Code
