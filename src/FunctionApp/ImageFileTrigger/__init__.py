@@ -11,7 +11,7 @@ from msrest.authentication import CognitiveServicesCredentials
 
 def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
     functionName = "ImageFileTrigger"
-    extensionsToProcess = ['.jpg','.jpeg','.gif','.png','.tif','.tiff']
+    extensionsToProcess = ['.jpg','.jpeg','.gif','.png','.bmp']
 
     try:
         fileNameArray = os.path.splitext(inputblob.name)
@@ -38,11 +38,14 @@ def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
             regionCount = 0
             for scanRegion in image_analysis.regions:
                 regionCount = regionCount + 1
-                lines = scanRegion.lines
-                logging.info(f"{functionName}:   Found {len(lines)} lines of text in region {regionCount}!")
-                for line in lines:
-                    line_text = " ".join([word.text for word in line.words])
-                    file_text = file_text + line_text + "\n"
+                if scanRegion.lines:
+                    lines = scanRegion.lines
+                    logging.info(f"{functionName}:   Found {len(lines)} lines of text in region {regionCount}!")
+                    for line in lines:
+                        line_text = " ".join([word.text for word in line.words])
+                        file_text = file_text + line_text + "\n"
+                else:
+                    logging.info(f"{functionName}:   Found 0 lines of text in region {regionCount}!")
 
             #logging.info(f"{functionName}:   Found results: {file_text}")
             logging.info(f"{functionName}:   Writing results to output folder {inputblob.name}.txt")
@@ -54,5 +57,6 @@ def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
         else:
             logging.info(f"{functionName}:   Skipping non-image file {inputblob.name}...")
 
-    except:
+    except Exception as ex:
         logging.exception(f"{functionName}: Error occurred during OCR processing!")
+        outputblob.set(ex.message)
