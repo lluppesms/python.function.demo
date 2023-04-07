@@ -29,7 +29,7 @@ def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
         if fileExtension in extensionsToProcess:
             logging.info(f"{functionName}: PDF processor triggered by file: {inputblob.name}")
 
-            formsKey = os.environ.get('FormsRecognizerKey')
+            formsKey = os.environ.get('FormsRecognizerAccessKey')
             formsResourceName = os.environ.get('FormsRecognizerResourceName')
 
             file_text = ""
