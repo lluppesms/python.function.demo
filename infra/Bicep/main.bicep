@@ -96,10 +96,10 @@ module computerVisionModule 'computervision.bicep' = {
     commonTags: commonTags
   }
 }
-module formsRecognizerModule 'computervision.bicep' = {
+module formsRecognizerModule 'formsrecognizer.bicep' = {
   name: 'formsrecognizer${deploymentSuffix}'
   params: {
-    computerVisionName: resourceNames.outputs.formsRecognizerName
+    formsRecognizerName: resourceNames.outputs.formsRecognizerName
     location: location
     commonTags: commonTags
   }
