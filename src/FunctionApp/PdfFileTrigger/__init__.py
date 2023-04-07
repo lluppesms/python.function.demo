@@ -51,7 +51,7 @@ def main(inputblob: func.InputStream, outputblob: func.Out[str]) -> None:
                 #logging.info(f"Page has width: {page.width} and height: {page.height}, measured with unit: {page.unit}")
                 file_text = file_text + f"Page: {page.page_number}\n"
                 for line in page.lines:
-                    logging.info(f"...Line '{line.content}'")
+                    #logging.info(f"...Line '{line.content}'")
                     file_text = file_text + line.content + "\n"
                 # for word in page.words:
                 #     logging.info(f"...Word '{word.content}' has a confidence of {word.confidence}")
