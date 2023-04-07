@@ -94,7 +94,14 @@ module computerVisionModule 'computervision.bicep' = {
     computerVisionName: resourceNames.outputs.computerVisionName
     location: location
     commonTags: commonTags
-    // virtualNetworkName: resourceNames.outputs.computerVisionNetworkName
+  }
+}
+module formsRecognizerModule 'computervision.bicep' = {
+  name: 'formsrecognizer${deploymentSuffix}'
+  params: {
+    computerVisionName: resourceNames.outputs.formsRecognizerName
+    location: location
+    commonTags: commonTags
   }
 }
 module keyVaultModule 'keyvault.bicep' = {

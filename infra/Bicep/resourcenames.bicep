@@ -21,6 +21,7 @@ var sanitizedEnvironment                 = toLower(environment)
 var functionAppName                      = toLower('${sanitizedOrgName}-${sanitizedAppName}-${functionName}-${sanitizedEnvironment}')
 var computerVisionName                   = toLower('${sanitizedOrgName}-${sanitizedAppName}-computer-vision-${sanitizedEnvironment}')
 var computerVisionNetworkName            = toLower('${sanitizedOrgName}-${sanitizedAppName}-cv-vnet-${sanitizedEnvironment}')
+var formsRecognizerName                  = toLower('${sanitizedOrgName}-${sanitizedAppName}-forms-recognizer-${sanitizedEnvironment}')
 var baseStorageName                      = toLower('${sanitizedOrgName}${sanitizedAppName}${sanitizedEnvironment}str')
 
 // --------------------------------------------------------------------------------
@@ -30,6 +31,7 @@ output functionInsightsName string       = toLower('${functionAppName}-insights'
 
 output computerVisionNetworkName string  = computerVisionNetworkName
 output computerVisionName string         = computerVisionName
+output formsRecognizerName string        = formsRecognizerName
 
 // Key Vaults and Storage Accounts can only be 24 characters long
 output keyVaultName string               = take(toLower('${sanitizedOrgName}${sanitizedAppName}${sanitizedEnvironment}vault'), 24)
