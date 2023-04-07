@@ -5,8 +5,8 @@
 // ----------------------------------------------------------------------------------------------------
 param formsRecognizerName string = 'xxx-forms-recognizer-${uniqueString(resourceGroup().id)}'
 param location string = resourceGroup().location
-@allowed(['S1','F0'])
-param sku string = 'S1'
+@allowed(['S0','F0'])
+param sku string = 'S0'
 param commonTags object = {}
 
 @allowed(['Enabled','Disabled'])
