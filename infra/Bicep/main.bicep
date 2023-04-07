@@ -94,7 +94,14 @@ module computerVisionModule 'computervision.bicep' = {
     computerVisionName: resourceNames.outputs.computerVisionName
     location: location
     commonTags: commonTags
-    // virtualNetworkName: resourceNames.outputs.computerVisionNetworkName
+  }
+}
+module formsRecognizerModule 'formsrecognizer.bicep' = {
+  name: 'formsrecognizer${deploymentSuffix}'
+  params: {
+    formsRecognizerName: resourceNames.outputs.formsRecognizerName
+    location: location
+    commonTags: commonTags
   }
 }
 module keyVaultModule 'keyvault.bicep' = {
@@ -147,6 +154,16 @@ module keyVaultSecret4 'keyvaultsecretcomputervision.bicep' = {
     computerVisionName: resourceNames.outputs.computerVisionName
   }
 }
+module keyVaultSecret5 'keyvaultsecretformsrecognizer.bicep' = {
+  name: 'keyVaultSecret5${deploymentSuffix}'
+  dependsOn: [ keyVaultModule, computerVisionModule ]
+  params: {
+    keyVaultName: keyVaultModule.outputs.name
+    keyName: 'FormsRecognizerAccessKey'
+    formsRecognizerName: resourceNames.outputs.formsRecognizerName
+  }
+}
+
 module functionAppSettingsModule 'functionpythonappsettings.bicep' = {
   name: 'functionAppSettings${deploymentSuffix}'
   dependsOn: [ keyVaultSecret1, keyVaultSecret2, keyVaultSecret3, keyVaultSecret4, functionModule ]
@@ -159,6 +176,8 @@ module functionAppSettingsModule 'functionpythonappsettings.bicep' = {
       ComputerVisionAccessKey: '@Microsoft.KeyVault(VaultName=${keyVaultModule.outputs.name};SecretName=ComputerVisionAccessKey)'
       ComputerVisionResourceName: resourceNames.outputs.computerVisionName
       ComputerVisionRegion: computerVisionModule.outputs.location
+      FormsRecognizerAccessKey: '@Microsoft.KeyVault(VaultName=${keyVaultModule.outputs.name};SecretName=FormsRecognizerAccessKey)'
+      FormsRecognizerResourceName: resourceNames.outputs.formsRecognizerName
     }
   }
 }
