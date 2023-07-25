@@ -46,6 +46,16 @@ module resourceNames 'resourcenames.bicep' = {
 }
 
 // --------------------------------------------------------------------------------
+module logAnalyticsWorkspaceModule 'loganalyticsworkspace.bicep' = {
+  name: 'logAnalytics${deploymentSuffix}'
+  params: {
+    logAnalyticsWorkspaceName: resourceNames.outputs.logAnalyticsWorkspaceName
+    location: location
+    commonTags: commonTags
+  }
+}
+
+// --------------------------------------------------------------------------------
 module functionStorageModule 'storageaccount.bicep' = {
   name: 'functionstorage${deploymentSuffix}'
   params: {
@@ -86,6 +96,7 @@ module functionModule 'functionpythonapp.bicep' = {
     functionAppSkuFamily: functionAppSkuFamily
     functionAppSkuTier: functionAppSkuTier
     functionStorageAccountName: functionStorageModule.outputs.name
+    workspaceId: logAnalyticsWorkspaceModule.outputs.id
   }
 }
 module computerVisionModule 'computervision.bicep' = {
@@ -116,8 +127,21 @@ module keyVaultModule 'keyvault.bicep' = {
     applicationUserObjectIds: [ functionModule.outputs.principalId ]
     keyVaultOwnerIpAddress: keyVaultOwnerIpAddress
     enableSoftDelete: false
+    createUserAssignedIdentity: true
+    workspaceId: logAnalyticsWorkspaceModule.outputs.id
   }
 }
+
+module keyVaultSecretList 'keyvaultlistsecretnames.bicep' = {
+  name: 'keyVault-Secret-List-Names${deploymentSuffix}'
+  dependsOn: [ keyVaultModule ]
+  params: {
+    keyVaultName: keyVaultModule.outputs.name
+    location: location
+    userManagedIdentityId: keyVaultModule.outputs.userManagedIdentityId
+  }
+}
+
 module keyVaultSecret1 'keyvaultsecret.bicep' = {
   name: 'keyVaultSecret1${deploymentSuffix}'
   dependsOn: [ keyVaultModule, functionModule ]
@@ -125,6 +149,7 @@ module keyVaultSecret1 'keyvaultsecret.bicep' = {
     keyVaultName: keyVaultModule.outputs.name
     secretName: 'functionAppInsightsKey'
     secretValue: functionModule.outputs.insightsKey
+    existingSecretNames: keyVaultSecretList.outputs.secretNameList
   }
 }
 module keyVaultSecret2 'keyvaultsecretstorageconnection.bicep' = {
@@ -132,8 +157,9 @@ module keyVaultSecret2 'keyvaultsecretstorageconnection.bicep' = {
   dependsOn: [ keyVaultModule, functionStorageModule ]
   params: {
     keyVaultName: keyVaultModule.outputs.name
-    keyName: 'functionStorageAccountConnectionString'
+    secretName: 'functionStorageAccountConnectionString'
     storageAccountName: functionStorageModule.outputs.name
+    existingSecretNames: keyVaultSecretList.outputs.secretNameList
   }
 }
 module keyVaultSecret3 'keyvaultsecretstorageconnection.bicep' = {
@@ -141,8 +167,9 @@ module keyVaultSecret3 'keyvaultsecretstorageconnection.bicep' = {
   dependsOn: [ keyVaultModule, dataStorageModule ]
   params: {
     keyVaultName: keyVaultModule.outputs.name
-    keyName: 'DataStorageConnectionAppSetting'
+    secretName: 'DataStorageConnectionAppSetting'
     storageAccountName: dataStorageModule.outputs.name
+    existingSecretNames: keyVaultSecretList.outputs.secretNameList
   }
 }
 module keyVaultSecret4 'keyvaultsecretcomputervision.bicep' = {
@@ -150,8 +177,9 @@ module keyVaultSecret4 'keyvaultsecretcomputervision.bicep' = {
   dependsOn: [ keyVaultModule, computerVisionModule ]
   params: {
     keyVaultName: keyVaultModule.outputs.name
-    keyName: 'ComputerVisionAccessKey'
+    secretName: 'ComputerVisionAccessKey'
     computerVisionName: resourceNames.outputs.computerVisionName
+    existingSecretNames: keyVaultSecretList.outputs.secretNameList
   }
 }
 module keyVaultSecret5 'keyvaultsecretformsrecognizer.bicep' = {
@@ -159,8 +187,9 @@ module keyVaultSecret5 'keyvaultsecretformsrecognizer.bicep' = {
   dependsOn: [ keyVaultModule, computerVisionModule ]
   params: {
     keyVaultName: keyVaultModule.outputs.name
-    keyName: 'FormsRecognizerAccessKey'
+    secretName: 'FormsRecognizerAccessKey'
     formsRecognizerName: resourceNames.outputs.formsRecognizerName
+    existingSecretNames: keyVaultSecretList.outputs.secretNameList
   }
 }
 

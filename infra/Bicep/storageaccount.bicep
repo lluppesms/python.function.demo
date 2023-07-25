@@ -5,13 +5,13 @@
 param storageAccountName string = 'mystorageaccountname'
 param location string = resourceGroup().location
 param commonTags object = {}
+
 @allowed([ 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS' ])
 param storageSku string = 'Standard_LRS'
 param storageAccessTier string = 'Hot'
 param containerNames array = ['input','output']
 @allowed(['Allow','Deny'])
 param allowNetworkAccess string = 'Allow'
-@description('The IP Addresses that are allowed access to this storage account.')
 
 // --------------------------------------------------------------------------------
 var templateTag = { TemplateFile: '~storageAccount.bicep' }
@@ -31,7 +31,6 @@ resource storageAccountResource 'Microsoft.Storage/storageAccounts@2019-06-01' =
             bypass: 'AzureServices'
             defaultAction: allowNetworkAccess
             ipRules: []
-            // ipRules: (empty(ipRules) ? json('[]') : ipRules)
             virtualNetworkRules: []
             //virtualNetworkRules: ((virtualNetworkType == 'External') ? json('[{"id": "${subscription().id}/resourceGroups/${vnetResource}/providers/Microsoft.Network/virtualNetworks/${vnetResource.name}/subnets/${subnetName}"}]') : json('[]'))
         }
@@ -56,7 +55,8 @@ resource storageAccountResource 'Microsoft.Storage/storageAccounts@2019-06-01' =
 }
 
 resource blobServiceResource 'Microsoft.Storage/storageAccounts/blobServices@2019-06-01' = {
-    name: '${storageAccountResource.name}/default'
+    parent: storageAccountResource
+    name: 'default'
     properties: {
         cors: {
             corsRules: [
@@ -78,5 +78,7 @@ resource containers 'Microsoft.Storage/storageAccounts/blobServices/containers@2
     }
   }]
 
+
+// --------------------------------------------------------------------------------
 output id string = storageAccountResource.id
 output name string = storageAccountResource.name

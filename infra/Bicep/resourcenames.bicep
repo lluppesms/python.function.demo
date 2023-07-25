@@ -25,6 +25,7 @@ var formsRecognizerName                  = toLower('${sanitizedOrgName}-${saniti
 var baseStorageName                      = toLower('${sanitizedOrgName}${sanitizedAppName}${sanitizedEnvironment}str')
 
 // --------------------------------------------------------------------------------
+output logAnalyticsWorkspaceName string =  toLower('${sanitizedOrgName}-${sanitizedAppName}-${sanitizedEnvironment}-logworkspace')
 output functionAppName string            = functionAppName
 output functionAppServicePlanName string = toLower('${functionAppName}-appsvc')
 output functionInsightsName string       = toLower('${functionAppName}-insights')
