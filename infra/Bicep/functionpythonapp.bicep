@@ -239,10 +239,10 @@ resource functionAppMetricLogging 'Microsoft.Insights/diagnosticSettings@2021-05
       {
         category: 'AllMetrics'
         enabled: true
-        retentionPolicy: {
-          days: 30
-          enabled: true 
-        }
+        // retentionPolicy: {
+        //   days: 30
+        //   enabled: true 
+        // }
       }
     ]
   }
@@ -258,10 +258,10 @@ resource functionAppAuditLogging 'Microsoft.Insights/diagnosticSettings@2021-05-
       {
         category: 'FunctionAppLogs'
         enabled: true
-        retentionPolicy: {
-          days: 30
-          enabled: true 
-        }
+        // retentionPolicy: {
+        //   days: 30
+        //   enabled: true 
+        // }
       }
     ]
   }
@@ -275,10 +275,10 @@ resource appServiceMetricLogging 'Microsoft.Insights/diagnosticSettings@2021-05-
       {
         category: 'AllMetrics'
         enabled: true
-        retentionPolicy: {
-          days: 30
-          enabled: true 
-        }
+        // retentionPolicy: {
+        //   days: 30
+        //   enabled: true 
+        // }
       }
     ]
   }
